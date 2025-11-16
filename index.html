@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All-in-One Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <h1>🧮 All-in-One Calculator</h1>
+    </nav>
+
+    <div class="main-container">
+        <!-- Main Tab Navigation -->
+        <div class="tab-navigation">
+            <button class="tab-btn active" onclick="switchTab('addition')">Add</button>
+            <button class="tab-btn" onclick="switchTab('subtraction')">Sub</button>
+            <button class="tab-btn" onclick="switchTab('multiplication')">Product</button>
+            <button class="tab-btn" onclick="switchTab('division')">Divide</button>
+            <button class="tab-btn" onclick="switchTab('financial')">Financial</button>
+            <button class="tab-btn" onclick="switchTab('shapes2d')">2D Shapes</button>
+            <button class="tab-btn" onclick="switchTab('shapes3d')">3D Shapes</button>
+        </div>
+        <!-- ADDITION TAB -->
+        <div id="addition" class="tab-content active">
+            <div class="calc-card">
+                <h2>Addition (Up to 100 Terms)</h2>
+                <div class="input-group">
+                    <input type="number" id="addNewInput" placeholder="Enter a number">
+                    <button onclick="addAdditionTerm()" class="add-btn">+ Add</button>
+                </div>
+                <div class="display-box" id="addDisplayBox">
+                    <div class="terms-display" id="addTermsDisplay"></div>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button onclick="calculateAddition()" style="flex: 1;">= Calculate</button>
+                    <button onclick="clearAddition()" class="clear-btn" style="flex: 1;">Clear</button>
+                </div>
+                <div class="result" id="addResult"></div>
+            </div>
+        </div>
+
+        <!-- SUBTRACTION TAB -->
+        <div id="subtraction" class="tab-content">
+            <div class="calc-card">
+                <h2>Subtraction (Up to 100 Terms)</h2>
+                <div class="input-group">
+                    <input type="number" id="subNewInput" placeholder="Enter a number">
+                    <button onclick="addSubtractionTerm()" class="add-btn">+ Add</button>
+                </div>
+                <div class="display-box" id="subDisplayBox">
+                    <div class="terms-display" id="subTermsDisplay"></div>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button onclick="calculateSubtraction()" style="flex: 1;">= Calculate</button>
+                    <button onclick="clearSubtraction()" class="clear-btn" style="flex: 1;">Clear</button>
+                </div>
+                <div class="result" id="subResult"></div>
+            </div>
+        </div>
+
+        <!-- MULTIPLICATION TAB -->
+        <div id="multiplication" class="tab-content">
+            <div class="calc-card">
+                <h2>Multiplication (Up to 100 Terms)</h2>
+                <div class="input-group">
+                    <input type="number" id="mulNewInput" placeholder="Enter a number">
+                    <button onclick="addMultiplicationTerm()" class="add-btn">+ Add</button>
+                </div>
+                <div class="display-box" id="mulDisplayBox">
+                    <div class="terms-display" id="mulTermsDisplay"></div>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button onclick="calculateMultiplication()" style="flex: 1;">= Calculate</button>
+                    <button onclick="clearMultiplication()" class="clear-btn" style="flex: 1;">Clear</button>
+                </div>
+                <div class="result" id="mulResult"></div>
+            </div>
+        </div>
+
+        <!-- DIVISION TAB -->
+        <div id="division" class="tab-content">
+            <div class="calc-card">
+                <h2>Division (Sequential)</h2>
+                <div class="input-group">
+                    <input type="number" id="divNewInput" placeholder="Enter a number">
+                    <button onclick="addDivisionTerm()" class="add-btn">+ Add</button>
+                </div>
+                <div class="display-box" id="divDisplayBox">
+                    <div class="terms-display" id="divTermsDisplay"></div>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button onclick="calculateDivision()" style="flex: 1;">= Calculate</button>
+                    <button onclick="clearDivision()" class="clear-btn" style="flex: 1;">Clear</button>
+                </div>
+                <div class="result" id="divResult"></div>
+            </div>
+        </div>
+
+        <!-- FINANCIAL TAB -->
+        <div id="financial" class="tab-content">
+            <div class="sub-tabs">
+                <button class="sub-tab-btn active" onclick="switchSubTab('financial', 'si')">Simple Interest</button>
+                <button class="sub-tab-btn" onclick="switchSubTab('financial', 'ci')">Compound Interest</button>
+            </div>
+
+            <!-- Simple Interest -->
+            <div id="si" class="sub-tab-content active">
+                <div class="calc-card">
+                    <h2>Simple Interest (SI)</h2>
+                    <p class="hint">Fill any values you know (Principal, Rate %, Time years, Interest, Amount). Leave the value you want to find blank and click <strong>Compute</strong>.</p>
+                    <div class="input-grid" style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Principal (P)
+                            <input type="number" id="siPrincipal" placeholder="e.g. 1000">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Rate (%) (R)
+                            <input type="number" id="siRate" placeholder="e.g. 5">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Time (Years) (T)
+                            <input type="number" id="siTime" placeholder="e.g. 2">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Interest (SI)
+                            <input type="number" id="siInterest" placeholder="Leave blank to compute">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Amount (A)
+                            <input type="number" id="siAmount" placeholder="Leave blank to compute">
+                        </label>
+                    </div>
+                    <div style="display:flex; gap:10px; margin-top:10px;">
+                        <button onclick="calculateSI()" style="flex:1;">Compute</button>
+                        <button onclick="clearSIFields()" class="clear-btn" style="flex:1;">Clear</button>
+                    </div>
+                    <div class="result" id="siResult"></div>
+                </div>
+            </div>
+
+            <!-- Compound Interest -->
+            <div id="ci" class="sub-tab-content">
+                <div class="calc-card">
+                    <h2>Compound Interest (CI)</h2>
+                    <p class="hint">Fill any values you know (Principal, Rate %, Time years, Frequency, Interest, Amount). Leave the value you want to find blank and click <strong>Compute</strong>.</p>
+                    <div class="input-grid" style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Principal (P)
+                            <input type="number" id="ciPrincipal" placeholder="e.g. 1000">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Rate (%) (R)
+                            <input type="number" id="ciRate" placeholder="e.g. 5">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Time (Years) (T)
+                            <input type="number" id="ciTime" placeholder="e.g. 2">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Frequency (n)
+                            <select id="ciFrequency">
+                                <option value="1">Annually</option>
+                                <option value="2">Semi-Annually</option>
+                                <option value="4">Quarterly</option>
+                                <option value="12">Monthly</option>
+                            </select>
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Compound Interest (CI)
+                            <input type="number" id="ciInterest" placeholder="Leave blank to compute">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Amount (A)
+                            <input type="number" id="ciAmount" placeholder="Leave blank to compute">
+                        </label>
+                    </div>
+                    <div style="display:flex; gap:10px; margin-top:10px;">
+                        <button onclick="calculateCI()" style="flex:1;">Compute</button>
+                        <button onclick="clearCIFields()" class="clear-btn" style="flex:1;">Clear</button>
+                    </div>
+                    <div class="result" id="ciResult"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2D SHAPES TAB -->
+        <div id="shapes2d" class="tab-content">
+            <div class="sub-tabs">
+                <button class="sub-tab-btn active" onclick="switchSubTab('shapes2d', 'circle')">Circle</button>
+                <button class="sub-tab-btn" onclick="switchSubTab('shapes2d', 'square')">Square</button>
+                <button class="sub-tab-btn" onclick="switchSubTab('shapes2d', 'rectangle')">Rectangle</button>
+                <button class="sub-tab-btn" onclick="switchSubTab('shapes2d', 'triangle')">Triangle</button>
+                <button class="sub-tab-btn" onclick="switchSubTab('shapes2d', 'ellipse')">Ellipse</button>
+                <button class="sub-tab-btn" onclick="switchSubTab('shapes2d', 'parallelogram')">Parallelogram</button>
+                <button class="sub-tab-btn" onclick="switchSubTab('shapes2d', 'trapezoid')">Trapezoid</button>
+            </div>
+
+            <!-- Circle -->
+            <div id="circle" class="sub-tab-content active">
+                <div class="calc-card">
+                    <h2>Circle</h2>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Radius
+                            <input type="number" id="circleRadius" placeholder="e.g. 5">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Area
+                            <input type="number" id="circleArea" placeholder="Leave blank to compute">
+                        </label>
+                    </div>
+                    <button onclick="calculateCircleArea()" style="margin-top:10px;">Calculate</button>
+                    <div class="result" id="circleAreaResult"></div>
+                </div>
+            </div>
+
+            <!-- Square -->
+            <div id="square" class="sub-tab-content">
+                <div class="calc-card">
+                    <h2>Square</h2>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Side
+                            <input type="number" id="squareSide" placeholder="e.g. 5">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Area
+                            <input type="number" id="squareArea" placeholder="Leave blank to compute">
+                        </label>
+                    </div>
+                    <button onclick="calculateSquareArea()" style="margin-top:10px;">Calculate</button>
+                    <div class="result" id="squareAreaResult"></div>
+                </div>
+            </div>
+
+            <!-- Rectangle -->
+            <div id="rectangle" class="sub-tab-content">
+                <div class="calc-card">
+                    <h2>Rectangle</h2>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Length
+                            <input type="number" id="rectLength" placeholder="e.g. 10">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Width
+                            <input type="number" id="rectWidth" placeholder="e.g. 5">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Area
+                            <input type="number" id="rectArea" placeholder="Leave blank to compute">
+                        </label>
+                    </div>
+                    <button onclick="calculateRectangleArea()" style="margin-top:10px;">Calculate</button>
+                    <div class="result" id="rectAreaResult"></div>
+                </div>
+            </div>
+
+            <!-- Triangle -->
+            <div id="triangle" class="sub-tab-content">
+                <div class="calc-card">
+                    <h2>Triangle</h2>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Base
+                            <input type="number" id="triBase" placeholder="e.g. 10">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Height
+                            <input type="number" id="triHeight" placeholder="e.g. 6">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Area
+                            <input type="number" id="triArea" placeholder="Leave blank to compute">
+                        </label>
+                    </div>
+                    <button onclick="calculateTriangleArea()" style="margin-top:10px;">Calculate</button>
+                    <div class="result" id="triAreaResult"></div>
+                </div>
+            </div>
+
+            <!-- Ellipse -->
+            <div id="ellipse" class="sub-tab-content">
+                <div class="calc-card">
+                    <h2>Ellipse</h2>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Semi-Major Axis (a)
+                            <input type="number" id="ellipseMajor" placeholder="e.g. 8">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Semi-Minor Axis (b)
+                            <input type="number" id="ellipseMinor" placeholder="e.g. 5">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Area
+                            <input type="number" id="ellipseArea" placeholder="Leave blank to compute">
+                        </label>
+                    </div>
+                    <button onclick="calculateEllipseArea()" style="margin-top:10px;">Calculate</button>
+                    <div class="result" id="ellipseAreaResult"></div>
+                </div>
+            </div>
+
+            <!-- Parallelogram -->
+            <div id="parallelogram" class="sub-tab-content">
+                <div class="calc-card">
+                    <h2>Parallelogram</h2>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Base
+                            <input type="number" id="paraBase" placeholder="e.g. 10">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Height
+                            <input type="number" id="paraHeight" placeholder="e.g. 7">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Area
+                            <input type="number" id="paraArea" placeholder="Leave blank to compute">
+                        </label>
+                    </div>
+                    <button onclick="calculateParallelogramArea()" style="margin-top:10px;">Calculate</button>
+                    <div class="result" id="paraAreaResult"></div>
+                </div>
+            </div>
+
+            <!-- Trapezoid -->
+            <div id="trapezoid" class="sub-tab-content">
+                <div class="calc-card">
+                    <h2>Trapezoid</h2>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Base 1
+                            <input type="number" id="trapBase1" placeholder="e.g. 12">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Base 2
+                            <input type="number" id="trapBase2" placeholder="e.g. 8">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Height
+                            <input type="number" id="trapHeight" placeholder="e.g. 5">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Area
+                            <input type="number" id="trapArea" placeholder="Leave blank to compute">
+                        </label>
+                    </div>
+                    <button onclick="calculateTrapezoidArea()" style="margin-top:10px;">Calculate</button>
+                    <div class="result" id="trapAreaResult"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3D SHAPES TAB -->
+        <div id="shapes3d" class="tab-content">
+            <div class="sub-tabs">
+                <button class="sub-tab-btn active" onclick="switchSubTab('shapes3d', 'sphere')">Sphere</button>
+                <button class="sub-tab-btn" onclick="switchSubTab('shapes3d', 'cube')">Cube</button>
+                <button class="sub-tab-btn" onclick="switchSubTab('shapes3d', 'cuboid')">Cuboid</button>
+                <button class="sub-tab-btn" onclick="switchSubTab('shapes3d', 'cylinder')">Cylinder</button>
+                <button class="sub-tab-btn" onclick="switchSubTab('shapes3d', 'cone')">Cone</button>
+                <button class="sub-tab-btn" onclick="switchSubTab('shapes3d', 'pyramid')">Pyramid</button>
+                <button class="sub-tab-btn" onclick="switchSubTab('shapes3d', 'hemisphere')">Hemisphere</button>
+            </div>
+
+            <!-- Sphere -->
+            <div id="sphere" class="sub-tab-content active">
+                <div class="calc-card">
+                    <h2>Sphere</h2>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Radius
+                            <input type="number" id="sphereRadius" placeholder="e.g. 5">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Volume
+                            <input type="number" id="sphereVolume" placeholder="Leave blank to compute">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Surface Area (TSA)
+                            <input type="number" id="sphereTSA" placeholder="Leave blank to compute">
+                        </label>
+                    </div>
+                    <button onclick="calculateSphere()" style="margin-top:10px;">Calculate</button>
+                    <div class="result" id="sphereResult"></div>
+                </div>
+            </div>
+
+            <!-- Cube -->
+            <div id="cube" class="sub-tab-content">
+                <div class="calc-card">
+                    <h2>Cube</h2>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Side
+                            <input type="number" id="cubeSide" placeholder="e.g. 5">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Volume
+                            <input type="number" id="cubeVolume" placeholder="Leave blank to compute">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">TSA
+                            <input type="number" id="cubeTSA" placeholder="Leave blank to compute">
+                        </label>
+                    </div>
+                    <button onclick="calculateCube()" style="margin-top:10px;">Calculate</button>
+                    <div class="result" id="cubeResult"></div>
+                </div>
+            </div>
+
+            <!-- Cuboid -->
+            <div id="cuboid" class="sub-tab-content">
+                <div class="calc-card">
+                    <h2>Cuboid (Rectangular Prism)</h2>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Length
+                            <input type="number" id="cuboidLength" placeholder="e.g. 10">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Width
+                            <input type="number" id="cuboidWidth" placeholder="e.g. 6">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Height
+                            <input type="number" id="cuboidHeight" placeholder="e.g. 4">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Volume
+                            <input type="number" id="cuboidVolume" placeholder="Leave blank to compute">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">TSA
+                            <input type="number" id="cuboidTSA" placeholder="Leave blank to compute">
+                        </label>
+                    </div>
+                    <button onclick="calculateCuboid()" style="margin-top:10px;">Calculate</button>
+                    <div class="result" id="cuboidResult"></div>
+                </div>
+            </div>
+
+            <!-- Cylinder -->
+            <div id="cylinder" class="sub-tab-content">
+                <div class="calc-card">
+                    <h2>Cylinder</h2>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Radius
+                            <input type="number" id="cylinderRadius" placeholder="e.g. 5">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Height
+                            <input type="number" id="cylinderHeight" placeholder="e.g. 10">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Volume
+                            <input type="number" id="cylinderVolume" placeholder="Leave blank to compute">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">CSA
+                            <input type="number" id="cylinderCSA" placeholder="Leave blank to compute">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">TSA
+                            <input type="number" id="cylinderTSA" placeholder="Leave blank to compute">
+                        </label>
+                    </div>
+                    <button onclick="calculateCylinder()" style="margin-top:10px;">Calculate</button>
+                    <div class="result" id="cylinderResult"></div>
+                </div>
+            </div>
+
+            <!-- Cone -->
+            <div id="cone" class="sub-tab-content">
+                <div class="calc-card">
+                    <h2>Cone</h2>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Radius
+                            <input type="number" id="coneRadius" placeholder="e.g. 4">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Height
+                            <input type="number" id="coneHeight" placeholder="e.g. 7">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Volume
+                            <input type="number" id="coneVolume" placeholder="Leave blank to compute">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">CSA
+                            <input type="number" id="coneCSA" placeholder="Leave blank to compute">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">TSA
+                            <input type="number" id="coneTSA" placeholder="Leave blank to compute">
+                        </label>
+                    </div>
+                    <button onclick="calculateCone()" style="margin-top:10px;">Calculate</button>
+                    <div class="result" id="coneResult"></div>
+                </div>
+            </div>
+
+            <!-- Pyramid -->
+            <div id="pyramid" class="sub-tab-content">
+                <div class="calc-card">
+                    <h2>Pyramid (Square Base)</h2>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Base Side
+                            <input type="number" id="pyramidBase" placeholder="e.g. 6">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Height
+                            <input type="number" id="pyramidHeight" placeholder="e.g. 8">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Volume
+                            <input type="number" id="pyramidVolume" placeholder="Leave blank to compute">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">TSA
+                            <input type="number" id="pyramidTSA" placeholder="Leave blank to compute">
+                        </label>
+                    </div>
+                    <button onclick="calculatePyramid()" style="margin-top:10px;">Calculate</button>
+                    <div class="result" id="pyramidResult"></div>
+                </div>
+            </div>
+
+            <!-- Hemisphere -->
+            <div id="hemisphere" class="sub-tab-content">
+                <div class="calc-card">
+                    <h2>Hemisphere</h2>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Radius
+                            <input type="number" id="hemisphereRadius" placeholder="e.g. 5">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Volume
+                            <input type="number" id="hemisphereVolume" placeholder="Leave blank to compute">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">CSA
+                            <input type="number" id="hemisphereCSA" placeholder="Leave blank to compute">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">TSA
+                            <input type="number" id="hemisphereTSA" placeholder="Leave blank to compute">
+                        </label>
+                    </div>
+                    <button onclick="calculateHemisphere()" style="margin-top:10px;">Calculate</button>
+                    <div class="result" id="hemisphereResult"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 All-in-One Calculator | Built with HTML, CSS & JavaScript</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
