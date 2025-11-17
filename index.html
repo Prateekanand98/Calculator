@@ -35,9 +35,11 @@
                 </div>
                 <div style="display: flex; gap: 10px; margin-top: 10px;">
                     <button onclick="calculateAddition()" style="flex: 1;">= Calculate</button>
+                    <button onclick="continueAddition()" style="flex: 1; background-color: #4CAF50; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">+ Continue</button>
                     <button onclick="clearAddition()" class="clear-btn" style="flex: 1;">Clear</button>
                 </div>
                 <div class="result" id="addResult"></div>
+                <button onclick="copyAddResult()" id="copyAddBtn" style="display:none; margin-top:10px; width:100%; background-color:#2196F3; color:white; padding:10px; border:none; border-radius:5px; cursor:pointer;">📋 Copy Result</button>
             </div>
         </div>
 
@@ -54,9 +56,11 @@
                 </div>
                 <div style="display: flex; gap: 10px; margin-top: 10px;">
                     <button onclick="calculateSubtraction()" style="flex: 1;">= Calculate</button>
+                    <button onclick="continueSubtraction()" style="flex: 1; background-color: #4CAF50; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">− Continue</button>
                     <button onclick="clearSubtraction()" class="clear-btn" style="flex: 1;">Clear</button>
                 </div>
                 <div class="result" id="subResult"></div>
+                <button onclick="copySubResult()" id="copySubBtn" style="display:none; margin-top:10px; width:100%; background-color:#2196F3; color:white; padding:10px; border:none; border-radius:5px; cursor:pointer;">📋 Copy Result</button>
             </div>
         </div>
 
@@ -73,9 +77,11 @@
                 </div>
                 <div style="display: flex; gap: 10px; margin-top: 10px;">
                     <button onclick="calculateMultiplication()" style="flex: 1;">= Calculate</button>
+                    <button onclick="continueMultiplication()" style="flex: 1; background-color: #4CAF50; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">× Continue</button>
                     <button onclick="clearMultiplication()" class="clear-btn" style="flex: 1;">Clear</button>
                 </div>
                 <div class="result" id="mulResult"></div>
+                <button onclick="copyMulResult()" id="copyMulBtn" style="display:none; margin-top:10px; width:100%; background-color:#2196F3; color:white; padding:10px; border:none; border-radius:5px; cursor:pointer;">📋 Copy Result</button>
             </div>
         </div>
 
@@ -92,9 +98,11 @@
                 </div>
                 <div style="display: flex; gap: 10px; margin-top: 10px;">
                     <button onclick="calculateDivision()" style="flex: 1;">= Calculate</button>
+                    <button onclick="continueDivision()" style="flex: 1; background-color: #4CAF50; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">÷ Continue</button>
                     <button onclick="clearDivision()" class="clear-btn" style="flex: 1;">Clear</button>
                 </div>
                 <div class="result" id="divResult"></div>
+                <button onclick="copyDivResult()" id="copyDivBtn" style="display:none; margin-top:10px; width:100%; background-color:#2196F3; color:white; padding:10px; border:none; border-radius:5px; cursor:pointer;">📋 Copy Result</button>
             </div>
         </div>
 
@@ -103,6 +111,9 @@
             <div class="sub-tabs">
                 <button class="sub-tab-btn active" onclick="switchSubTab('financial', 'si')">Simple Interest</button>
                 <button class="sub-tab-btn" onclick="switchSubTab('financial', 'ci')">Compound Interest</button>
+                <button class="sub-tab-btn" onclick="switchSubTab('financial', 'pl')">Profit &amp; Loss</button>
+                <button class="sub-tab-btn" onclick="switchSubTab('financial', 'discount')">Discount</button>
+                <button class="sub-tab-btn" onclick="switchSubTab('financial', 'ratio')">Ratio</button>
             </div>
 
             <!-- Simple Interest -->
@@ -172,6 +183,80 @@
                     <div class="result" id="ciResult"></div>
                 </div>
             </div>
+
+            <!-- Profit & Loss -->
+            <div id="pl" class="sub-tab-content">
+                <div class="calc-card">
+                    <h2>Profit &amp; Loss</h2>
+                    <p class="hint">Provide any two values (CP, SP, Profit Amount, Profit %). Leave the value you want to find blank and click <strong>Compute</strong>.</p>
+                    <div class="input-grid" style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Cost Price (CP)
+                            <input type="number" id="plCost" placeholder="e.g. 1000" step="any">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Selling Price (SP)
+                            <input type="number" id="plSell" placeholder="e.g. 1200" step="any">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Profit Amount
+                            <input type="number" id="plProfitAmt" placeholder="e.g. 200" step="any">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Profit (%)
+                            <input type="number" id="plProfitPercent" placeholder="e.g. 20" step="any">
+                        </label>
+                    </div>
+                    <div style="display:flex; gap:10px; margin-top:10px;">
+                        <button onclick="calculateProfitLoss()" style="flex:1;">Compute</button>
+                        <button onclick="clearPLFields()" class="clear-btn" style="flex:1;">Clear</button>
+                    </div>
+                    <div class="result" id="plResult"></div>
+                </div>
+            </div>
+
+            <!-- Discount -->
+            <div id="discount" class="sub-tab-content">
+                <div class="calc-card">
+                    <h2>Discount</h2>
+                    <p class="hint">Provide any two values (Marked Price, Discount %, Discount Amount, or Selling Price). Leave the value you want to find blank and click <strong>Compute</strong>.</p>
+                    <div class="input-grid" style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Marked Price (MP)
+                            <input type="number" id="discMP" placeholder="e.g. 2000" step="any">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Discount (%)
+                            <input type="number" id="discPercent" placeholder="e.g. 15" step="any">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Discount Amount
+                            <input type="number" id="discAmount" placeholder="e.g. 300" step="any">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Selling Price (SP)
+                            <input type="number" id="discSP" placeholder="e.g. 1700" step="any">
+                        </label>
+                    </div>
+                    <div style="display:flex; gap:10px; margin-top:10px;">
+                        <button onclick="calculateDiscount()" style="flex:1;">Compute</button>
+                        <button onclick="clearDiscountFields()" class="clear-btn" style="flex:1;">Clear</button>
+                    </div>
+                    <div class="result" id="discountResult"></div>
+                </div>
+            </div>
+
+            <!-- Ratio -->
+            <div id="ratio" class="sub-tab-content">
+                <div class="calc-card">
+                    <h2>Ratio (Simplify)</h2>
+                    <div class="input-grid" style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">First Number
+                            <input type="number" id="ratioA" placeholder="e.g. 8" step="1" required>
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Second Number
+                            <input type="number" id="ratioB" placeholder="e.g. 12" step="1" required>
+                        </label>
+                    </div>
+                    <div style="display:flex; gap:10px; margin-top:10px;">
+                        <button onclick="calculateRatio()" style="flex:1;">Compute</button>
+                        <button onclick="clearRatioFields()" class="clear-btn" style="flex:1;">Clear</button>
+                    </div>
+                    <div class="result" id="ratioResult"></div>
+                </div>
+            </div>
         </div>
 
         <!-- 2D SHAPES TAB -->
@@ -191,6 +276,12 @@
                 <div class="calc-card">
                     <h2>Circle</h2>
                     <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Unit
+                            <select id="circleUnit" style="padding:8px; border-radius:5px; border:1px solid #ddd;">
+                                <option value="cm">Centimeters (cm)</option>
+                                <option value="m">Meters (m)</option>
+                            </select>
+                        </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Radius
                             <input type="number" id="circleRadius" placeholder="e.g. 5">
                         </label>
@@ -208,6 +299,12 @@
                 <div class="calc-card">
                     <h2>Square</h2>
                     <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Unit
+                            <select id="squareUnit" style="padding:8px; border-radius:5px; border:1px solid #ddd;">
+                                <option value="cm">Centimeters (cm)</option>
+                                <option value="m">Meters (m)</option>
+                            </select>
+                        </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Side
                             <input type="number" id="squareSide" placeholder="e.g. 5">
                         </label>
@@ -225,11 +322,29 @@
                 <div class="calc-card">
                     <h2>Rectangle</h2>
                     <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Unit
+                            <select id="rectUnit" style="padding:8px; border-radius:5px; border:1px solid #ddd;">
+                                <option value="cm">Centimeters (cm)</option>
+                                <option value="m">Meters (m)</option>
+                            </select>
+                        </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Length
-                            <input type="number" id="rectLength" placeholder="e.g. 10">
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <input type="number" id="rectLength" placeholder="e.g. 10" style="flex:1;">
+                                <select id="rectLengthUnit" style="padding:6px;">
+                                    <option value="cm">cm</option>
+                                    <option value="m">m</option>
+                                </select>
+                            </div>
                         </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Width
-                            <input type="number" id="rectWidth" placeholder="e.g. 5">
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <input type="number" id="rectWidth" placeholder="e.g. 5" style="flex:1;">
+                                <select id="rectWidthUnit" style="padding:6px;">
+                                    <option value="cm">cm</option>
+                                    <option value="m">m</option>
+                                </select>
+                            </div>
                         </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Area
                             <input type="number" id="rectArea" placeholder="Leave blank to compute">
@@ -245,11 +360,29 @@
                 <div class="calc-card">
                     <h2>Triangle</h2>
                     <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Unit
+                            <select id="triUnit" style="padding:8px; border-radius:5px; border:1px solid #ddd;">
+                                <option value="cm">Centimeters (cm)</option>
+                                <option value="m">Meters (m)</option>
+                            </select>
+                        </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Base
-                            <input type="number" id="triBase" placeholder="e.g. 10">
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <input type="number" id="triBase" placeholder="e.g. 10" style="flex:1;">
+                                <select id="triBaseUnit" style="padding:6px;">
+                                    <option value="cm">cm</option>
+                                    <option value="m">m</option>
+                                </select>
+                            </div>
                         </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Height
-                            <input type="number" id="triHeight" placeholder="e.g. 6">
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <input type="number" id="triHeight" placeholder="e.g. 6" style="flex:1;">
+                                <select id="triHeightUnit" style="padding:6px;">
+                                    <option value="cm">cm</option>
+                                    <option value="m">m</option>
+                                </select>
+                            </div>
                         </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Area
                             <input type="number" id="triArea" placeholder="Leave blank to compute">
@@ -265,11 +398,29 @@
                 <div class="calc-card">
                     <h2>Ellipse</h2>
                     <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Unit
+                            <select id="ellipseUnit" style="padding:8px; border-radius:5px; border:1px solid #ddd;">
+                                <option value="cm">Centimeters (cm)</option>
+                                <option value="m">Meters (m)</option>
+                            </select>
+                        </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Semi-Major Axis (a)
-                            <input type="number" id="ellipseMajor" placeholder="e.g. 8">
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <input type="number" id="ellipseMajor" placeholder="e.g. 8" style="flex:1;">
+                                <select id="ellipseMajorUnit" style="padding:6px;">
+                                    <option value="cm">cm</option>
+                                    <option value="m">m</option>
+                                </select>
+                            </div>
                         </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Semi-Minor Axis (b)
-                            <input type="number" id="ellipseMinor" placeholder="e.g. 5">
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <input type="number" id="ellipseMinor" placeholder="e.g. 5" style="flex:1;">
+                                <select id="ellipseMinorUnit" style="padding:6px;">
+                                    <option value="cm">cm</option>
+                                    <option value="m">m</option>
+                                </select>
+                            </div>
                         </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Area
                             <input type="number" id="ellipseArea" placeholder="Leave blank to compute">
@@ -285,11 +436,29 @@
                 <div class="calc-card">
                     <h2>Parallelogram</h2>
                     <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Unit
+                            <select id="paraUnit" style="padding:8px; border-radius:5px; border:1px solid #ddd;">
+                                <option value="cm">Centimeters (cm)</option>
+                                <option value="m">Meters (m)</option>
+                            </select>
+                        </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Base
-                            <input type="number" id="paraBase" placeholder="e.g. 10">
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <input type="number" id="paraBase" placeholder="e.g. 10" style="flex:1;">
+                                <select id="paraBaseUnit" style="padding:6px;">
+                                    <option value="cm">cm</option>
+                                    <option value="m">m</option>
+                                </select>
+                            </div>
                         </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Height
-                            <input type="number" id="paraHeight" placeholder="e.g. 7">
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <input type="number" id="paraHeight" placeholder="e.g. 7" style="flex:1;">
+                                <select id="paraHeightUnit" style="padding:6px;">
+                                    <option value="cm">cm</option>
+                                    <option value="m">m</option>
+                                </select>
+                            </div>
                         </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Area
                             <input type="number" id="paraArea" placeholder="Leave blank to compute">
@@ -305,14 +474,38 @@
                 <div class="calc-card">
                     <h2>Trapezoid</h2>
                     <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Unit
+                            <select id="trapUnit" style="padding:8px; border-radius:5px; border:1px solid #ddd;">
+                                <option value="cm">Centimeters (cm)</option>
+                                <option value="m">Meters (m)</option>
+                            </select>
+                        </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Base 1
-                            <input type="number" id="trapBase1" placeholder="e.g. 12">
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <input type="number" id="trapBase1" placeholder="e.g. 12" style="flex:1;">
+                                <select id="trapBase1Unit" style="padding:6px;">
+                                    <option value="cm">cm</option>
+                                    <option value="m">m</option>
+                                </select>
+                            </div>
                         </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Base 2
-                            <input type="number" id="trapBase2" placeholder="e.g. 8">
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <input type="number" id="trapBase2" placeholder="e.g. 8" style="flex:1;">
+                                <select id="trapBase2Unit" style="padding:6px;">
+                                    <option value="cm">cm</option>
+                                    <option value="m">m</option>
+                                </select>
+                            </div>
                         </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Height
-                            <input type="number" id="trapHeight" placeholder="e.g. 5">
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <input type="number" id="trapHeight" placeholder="e.g. 5" style="flex:1;">
+                                <select id="trapHeightUnit" style="padding:6px;">
+                                    <option value="cm">cm</option>
+                                    <option value="m">m</option>
+                                </select>
+                            </div>
                         </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Area
                             <input type="number" id="trapArea" placeholder="Leave blank to compute">
@@ -341,6 +534,12 @@
                 <div class="calc-card">
                     <h2>Sphere</h2>
                     <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Unit
+                            <select id="sphereUnit" style="padding:8px; border-radius:5px; border:1px solid #ddd;">
+                                <option value="cm">Centimeters (cm)</option>
+                                <option value="m">Meters (m)</option>
+                            </select>
+                        </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Radius
                             <input type="number" id="sphereRadius" placeholder="e.g. 5">
                         </label>
@@ -361,6 +560,12 @@
                 <div class="calc-card">
                     <h2>Cube</h2>
                     <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Unit
+                            <select id="cubeUnit" style="padding:8px; border-radius:5px; border:1px solid #ddd;">
+                                <option value="cm">Centimeters (cm)</option>
+                                <option value="m">Meters (m)</option>
+                            </select>
+                        </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Side
                             <input type="number" id="cubeSide" placeholder="e.g. 5">
                         </label>
@@ -382,13 +587,31 @@
                     <h2>Cuboid (Rectangular Prism)</h2>
                     <div style="display:flex; flex-direction:column; gap:12px;">
                         <label style="display:flex; flex-direction:column; gap:6px;">Length
-                            <input type="number" id="cuboidLength" placeholder="e.g. 10">
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <input type="number" id="cuboidLength" placeholder="e.g. 10" style="flex:1;">
+                                <select id="cuboidLengthUnit" style="padding:6px;">
+                                    <option value="cm">cm</option>
+                                    <option value="m">m</option>
+                                </select>
+                            </div>
                         </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Width
-                            <input type="number" id="cuboidWidth" placeholder="e.g. 6">
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <input type="number" id="cuboidWidth" placeholder="e.g. 6" style="flex:1;">
+                                <select id="cuboidWidthUnit" style="padding:6px;">
+                                    <option value="cm">cm</option>
+                                    <option value="m">m</option>
+                                </select>
+                            </div>
                         </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Height
-                            <input type="number" id="cuboidHeight" placeholder="e.g. 4">
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <input type="number" id="cuboidHeight" placeholder="e.g. 4" style="flex:1;">
+                                <select id="cuboidHeightUnit" style="padding:6px;">
+                                    <option value="cm">cm</option>
+                                    <option value="m">m</option>
+                                </select>
+                            </div>
                         </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Volume
                             <input type="number" id="cuboidVolume" placeholder="Leave blank to compute">
@@ -408,10 +631,22 @@
                     <h2>Cylinder</h2>
                     <div style="display:flex; flex-direction:column; gap:12px;">
                         <label style="display:flex; flex-direction:column; gap:6px;">Radius
-                            <input type="number" id="cylinderRadius" placeholder="e.g. 5">
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <input type="number" id="cylinderRadius" placeholder="e.g. 5" style="flex:1;">
+                                <select id="cylinderRadiusUnit" style="padding:6px;">
+                                    <option value="cm">cm</option>
+                                    <option value="m">m</option>
+                                </select>
+                            </div>
                         </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Height
-                            <input type="number" id="cylinderHeight" placeholder="e.g. 10">
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <input type="number" id="cylinderHeight" placeholder="e.g. 10" style="flex:1;">
+                                <select id="cylinderHeightUnit" style="padding:6px;">
+                                    <option value="cm">cm</option>
+                                    <option value="m">m</option>
+                                </select>
+                            </div>
                         </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Volume
                             <input type="number" id="cylinderVolume" placeholder="Leave blank to compute">
@@ -434,10 +669,22 @@
                     <h2>Cone</h2>
                     <div style="display:flex; flex-direction:column; gap:12px;">
                         <label style="display:flex; flex-direction:column; gap:6px;">Radius
-                            <input type="number" id="coneRadius" placeholder="e.g. 4">
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <input type="number" id="coneRadius" placeholder="e.g. 4" style="flex:1;">
+                                <select id="coneRadiusUnit" style="padding:6px;">
+                                    <option value="cm">cm</option>
+                                    <option value="m">m</option>
+                                </select>
+                            </div>
                         </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Height
-                            <input type="number" id="coneHeight" placeholder="e.g. 7">
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <input type="number" id="coneHeight" placeholder="e.g. 7" style="flex:1;">
+                                <select id="coneHeightUnit" style="padding:6px;">
+                                    <option value="cm">cm</option>
+                                    <option value="m">m</option>
+                                </select>
+                            </div>
                         </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Volume
                             <input type="number" id="coneVolume" placeholder="Leave blank to compute">
@@ -460,10 +707,22 @@
                     <h2>Pyramid (Square Base)</h2>
                     <div style="display:flex; flex-direction:column; gap:12px;">
                         <label style="display:flex; flex-direction:column; gap:6px;">Base Side
-                            <input type="number" id="pyramidBase" placeholder="e.g. 6">
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <input type="number" id="pyramidBase" placeholder="e.g. 6" style="flex:1;">
+                                <select id="pyramidBaseUnit" style="padding:6px;">
+                                    <option value="cm">cm</option>
+                                    <option value="m">m</option>
+                                </select>
+                            </div>
                         </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Height
-                            <input type="number" id="pyramidHeight" placeholder="e.g. 8">
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <input type="number" id="pyramidHeight" placeholder="e.g. 8" style="flex:1;">
+                                <select id="pyramidHeightUnit" style="padding:6px;">
+                                    <option value="cm">cm</option>
+                                    <option value="m">m</option>
+                                </select>
+                            </div>
                         </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Volume
                             <input type="number" id="pyramidVolume" placeholder="Leave blank to compute">
@@ -482,6 +741,12 @@
                 <div class="calc-card">
                     <h2>Hemisphere</h2>
                     <div style="display:flex; flex-direction:column; gap:12px;">
+                        <label style="display:flex; flex-direction:column; gap:6px;">Unit
+                            <select id="hemisphereUnit" style="padding:8px; border-radius:5px; border:1px solid #ddd;">
+                                <option value="cm">Centimeters (cm)</option>
+                                <option value="m">Meters (m)</option>
+                            </select>
+                        </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Radius
                             <input type="number" id="hemisphereRadius" placeholder="e.g. 5">
                         </label>
