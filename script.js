@@ -2931,33 +2931,49 @@ function initVisitorCounter() {
         }
 
         const timeoutMs = 3000;
-        const controller = ('AbortController' in window) ? new AbortController() : null;
-        const signal = controller ? controller.signal : undefined;
-        const timer = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
 
-        fetch('/api/visitors/increment', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ visitorId }),
-            signal
-        })
-        .then(resp => {
-            if (timer) clearTimeout(timer);
-            if (!resp.ok) throw new Error('Network response not ok');
-            return resp.json();
-        })
-        .then(data => {
-            if (data && typeof data.count === 'number') {
-                el.textContent = `Visitors: ${data.count}` + (data.incremented === true ? '' : '');
-                // mark local registered so fallback doesn't double-count later
-                try { localStorage.setItem(localRegKey, '1'); } catch (e) {}
-            } else {
-                fallbackLocal();
+        (async function tryServerIncrement() {
+            // Candidate endpoints: try relative first (works when served by server),
+            // then explicit localhost:3000 when page opened via file:// or relative fails.
+            const endpoints = ['/api/visitors/increment'];
+            if (location.protocol === 'file:') {
+                endpoints.push('http://localhost:3000/api/visitors/increment');
+            } else if (window.location && window.location.hostname && window.location.hostname !== 'localhost') {
+                // also try explicit localhost as a fallback for development setups
+                endpoints.push('http://localhost:3000/api/visitors/increment');
             }
-        })
-        .catch(() => {
+
+            for (const url of endpoints) {
+                try {
+                    const controllerLocal = ('AbortController' in window) ? new AbortController() : null;
+                    const signalLocal = controllerLocal ? controllerLocal.signal : undefined;
+                    const timerLocal = controllerLocal ? setTimeout(() => controllerLocal.abort(), timeoutMs) : null;
+
+                    const resp = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ visitorId }),
+                        signal: signalLocal
+                    });
+
+                    if (timerLocal) clearTimeout(timerLocal);
+                    if (!resp.ok) throw new Error('Network response not ok');
+                    const data = await resp.json();
+                    if (data && typeof data.count === 'number') {
+                        el.textContent = `Visitors: ${data.count}`;
+                        // mark local registered so fallback doesn't double-count later
+                        try { localStorage.setItem(localRegKey, '1'); } catch (e) {}
+                        return;
+                    }
+                    // if response not usable, try next endpoint
+                } catch (e) {
+                    // try next endpoint
+                }
+            }
+
+            // all server attempts failed -> fallback to local registration
             fallbackLocal();
-        });
+        })();
 
     } catch (e) {
         // fallback if anything unexpected happens
