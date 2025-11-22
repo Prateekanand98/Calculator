@@ -515,14 +515,110 @@ function calculateDivision() {
         showResult('divResult', 'Please enter at least one number', false);
         return;
     }
+
+    // Check for division by zero
     for (let i = 1; i < divisionTerms.length; i++) {
         if (divisionTerms[i] === 0) {
             showResult('divResult', 'Cannot divide by zero', false);
             return;
         }
     }
-    const result = divisionTerms.reduce((quotient, num, idx) => idx === 0 ? num : quotient / num, 0);
-    showResult('divResult', `${divisionTerms.join(' ÷ ')} = <strong>${formatResult(result)}</strong>`);
+
+    // Helper: convert a numeric string/number to an integer fraction [num, den]
+    function numberStringToFraction(s) {
+        let str = String(s);
+        let neg = false;
+        if (str[0] === '-') { neg = true; str = str.slice(1); }
+        if (str.indexOf('.') >= 0) {
+            const parts = str.split('.');
+            const intPart = parts[0] || '0';
+            const dec = parts[1] || '';
+            const denom = Math.pow(10, dec.length);
+            const numer = parseInt(intPart || '0', 10) * denom + parseInt(dec || '0', 10);
+            return [neg ? -numer : numer, denom];
+        }
+        // integer
+        return [neg ? -parseInt(str || '0', 10) : parseInt(str || '0', 10), 1];
+    }
+
+    function numberToFraction(num) {
+        if (!isFinite(num)) return null;
+        const s = String(num);
+        if (s.indexOf('e') >= 0 || s.indexOf('E') >= 0) {
+            // fallback: use fixed representation with reasonable precision
+            const fixed = num.toFixed(12).replace(/0+$/,'').replace(/\.$/,'');
+            return numberStringToFraction(fixed);
+        }
+        return numberStringToFraction(s);
+    }
+
+    function simplifyFraction(n, d) {
+        if (d === 0) return [n, d];
+        const sign = (n < 0) ? -1 : 1;
+        n = Math.abs(n);
+        d = Math.abs(d);
+        const g = gcd(n, d) || 1;
+        n = sign * (n / g);
+        d = d / g;
+        return [n, d];
+    }
+
+    // Build exact rational representation by treating each term as a fraction
+    let [resNum, resDen] = numberToFraction(divisionTerms[0]);
+    for (let i = 1; i < divisionTerms.length; i++) {
+        const frac = numberToFraction(divisionTerms[i]);
+        const tNum = frac[0];
+        const tDen = frac[1];
+        // division by t -> multiply by reciprocal: (resNum/resDen) / (tNum/tDen) = (resNum * tDen) / (resDen * tNum)
+        resNum = resNum * tDen;
+        resDen = resDen * tNum;
+    }
+
+    // If denominator is zero after construction (should be caught earlier), error
+    if (resDen === 0) {
+        showResult('divResult', 'Cannot divide by zero', false);
+        return;
+    }
+
+    // Simplify fraction
+    let [simpNum, simpDen] = simplifyFraction(resNum, resDen);
+
+    // Compute decimal value
+    const decimalValue = simpNum / simpDen;
+
+    // Prepare display parts
+    const parts = [];
+    // Original expression
+    parts.push(`<strong>Expression:</strong> ${divisionTerms.join(' ÷ ')}`);
+
+    // Decimal representation (always available)
+    parts.push(`<strong>Decimal:</strong> ${formatResult(decimalValue)}`);
+
+    // Fraction representation (if denominator != 1)
+    if (simpDen !== 1) {
+        // Ensure numerator/denominator sign placed on numerator
+        parts.push(`<strong>Fraction (simplified):</strong> ${simpNum}/${simpDen}`);
+    } else {
+        // whole number
+        parts.push(`<strong>Integer:</strong> ${simpNum}`);
+    }
+
+    // Mixed fraction (if absolute numerator larger than denominator and denominator > 1)
+    if (simpDen > 1 && Math.abs(simpNum) > simpDen) {
+        const sign = simpNum < 0 ? '-' : '';
+        const absNum = Math.abs(simpNum);
+        const whole = Math.floor(absNum / simpDen);
+        const rem = absNum % simpDen;
+        if (rem === 0) {
+            parts.push(`<strong>Mixed Fraction:</strong> ${sign}${whole}`);
+        } else {
+            parts.push(`<strong>Mixed Fraction:</strong> ${sign}${whole} ${rem}/${simpDen}`);
+        }
+    }
+
+    // Compose result HTML
+    const resultHTML = parts.join('<br>');
+    showResult('divResult', resultHTML);
 }
 
 function clearDivision() {
@@ -2649,6 +2745,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // initialize ad visibility state (if user previously dismissed ads)
     try { if (typeof initAdState === 'function') initAdState(); } catch (e) { /* ignore */ }
+    // initialize visitor counter display
+    try { if (typeof initVisitorCounter === 'function') initVisitorCounter(); } catch (e) { /* ignore */ }
 });
 
 // ----------------- AD BOX CONTROLS -----------------
@@ -2786,4 +2884,85 @@ function initAdLazyLoad() {
         }
     } catch (e) { /* ignore */ }
 }
+
+// ========== VISITOR COUNTER (client-side) ==========
+function initVisitorCounter() {
+    try {
+        const el = document.getElementById('visitorCounter');
+        if (!el) return;
+
+        // Persistent visitor id (per browser). Generate if missing.
+        const uuidKey = 'visitor_uuid_v1';
+        let visitorId = localStorage.getItem(uuidKey);
+        if (!visitorId) {
+            if ('randomUUID' in crypto) {
+                try { visitorId = crypto.randomUUID(); } catch (e) { visitorId = null; }
+            }
+            if (!visitorId) {
+                // fallback simple uuid generator
+                visitorId = 'v-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,10);
+            }
+            try { localStorage.setItem(uuidKey, visitorId); } catch (e) { /* ignore */ }
+        }
+
+        // Local fallback registration: only register once per browser when server unavailable
+        const localRegKey = 'visitor_registered_local_v1';
+        const fallbackLocal = () => {
+            try {
+                const registered = localStorage.getItem(localRegKey);
+                const key = 'visitor_local_count';
+                let count = parseInt(localStorage.getItem(key) || '0', 10);
+                if (isNaN(count)) count = 0;
+                if (!registered) {
+                    count += 1; // count this browser once
+                    localStorage.setItem(key, String(count));
+                    localStorage.setItem(localRegKey, '1');
+                }
+                el.textContent = `Visitors (this browser): ${count} (local)`;
+            } catch (e) {
+                // ignore
+            }
+        };
+
+        // Try server increment with visitorId; short timeout
+        if (!('fetch' in window)) {
+            fallbackLocal();
+            return;
+        }
+
+        const timeoutMs = 3000;
+        const controller = ('AbortController' in window) ? new AbortController() : null;
+        const signal = controller ? controller.signal : undefined;
+        const timer = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
+
+        fetch('/api/visitors/increment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ visitorId }),
+            signal
+        })
+        .then(resp => {
+            if (timer) clearTimeout(timer);
+            if (!resp.ok) throw new Error('Network response not ok');
+            return resp.json();
+        })
+        .then(data => {
+            if (data && typeof data.count === 'number') {
+                el.textContent = `Visitors: ${data.count}` + (data.incremented === true ? '' : '');
+                // mark local registered so fallback doesn't double-count later
+                try { localStorage.setItem(localRegKey, '1'); } catch (e) {}
+            } else {
+                fallbackLocal();
+            }
+        })
+        .catch(() => {
+            fallbackLocal();
+        });
+
+    } catch (e) {
+        // fallback if anything unexpected happens
+        try { const el = document.getElementById('visitorCounter'); if (el) el.textContent = 'Visitors: —'; } catch (e) {}
+    }
+}
+
 

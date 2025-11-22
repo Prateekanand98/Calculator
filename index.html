@@ -29,97 +29,104 @@
     <div class="main-container">
         <!-- Main Tab Navigation -->
         <div class="tab-navigation">
-            <button class="tab-btn active" onclick="switchTab('addition')">Add</button>
-            <button class="tab-btn" onclick="switchTab('subtraction')">Sub</button>
-            <button class="tab-btn" onclick="switchTab('multiplication')">Product</button>
-            <button class="tab-btn" onclick="switchTab('division')">Divide</button>
+            <button class="tab-btn active" onclick="switchTab('basic')">Basic</button>
             <button class="tab-btn" onclick="switchTab('lcmhcf')">LCM & HCF</button>
             <button class="tab-btn" onclick="switchTab('expression')">Expression</button>
             <button class="tab-btn" onclick="switchTab('financial')">Financial</button>
             <button class="tab-btn" onclick="switchTab('shapes2d')">2D Shapes</button>
             <button class="tab-btn" onclick="switchTab('shapes3d')">3D Shapes</button>
         </div>
-        <!-- ADDITION TAB -->
-        <div id="addition" class="tab-content active">
-            <div class="calc-card">
-                <h2>Addition (Up to 100 Terms)</h2>
-                <div class="input-group">
-                    <input type="number" id="addNewInput" placeholder="Enter a number">
-                    <button onclick="addAdditionTerm()" class="add-btn">+ Add</button>
-                </div>
-                <div class="display-box" id="addDisplayBox">
-                    <div class="terms-display" id="addTermsDisplay"></div>
-                </div>
-                <div style="display: flex; gap: 10px; margin-top: 10px;">
-                    <button onclick="calculateAddition()" style="flex: 1;">= Calculate</button>
-                    <button onclick="continueAddition()" style="flex: 1; background-color: #4CAF50; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">+ Continue</button>
-                    <button onclick="clearAddition()" class="clear-btn" style="flex: 1;">Clear</button>
-                </div>
-                <div class="result" id="addResult"></div>
-                <button onclick="copyAddResult()" id="copyAddBtn" style="display:none; margin-top:10px; width:100%; background-color:#2196F3; color:white; padding:10px; border:none; border-radius:5px; cursor:pointer;">📋 Copy Result</button>
+        <!-- BASIC TAB (contains Add/Sub/Multiplication/Division as sub-tabs) -->
+        <div id="basic" class="tab-content active">
+            <div class="sub-tabs">
+                <button class="sub-tab-btn active" onclick="switchSubTab('basic', 'basic-add')">Add</button>
+                <button class="sub-tab-btn" onclick="switchSubTab('basic', 'basic-sub')">Sub</button>
+                <button class="sub-tab-btn" onclick="switchSubTab('basic', 'basic-mul')">Product</button>
+                <button class="sub-tab-btn" onclick="switchSubTab('basic', 'basic-div')">Divide</button>
             </div>
-        </div>
 
-        <!-- SUBTRACTION TAB -->
-        <div id="subtraction" class="tab-content">
-            <div class="calc-card">
-                <h2>Subtraction (Up to 100 Terms)</h2>
-                <div class="input-group">
-                    <input type="number" id="subNewInput" placeholder="Enter a number">
-                    <button onclick="addSubtractionTerm()" class="add-btn">+ Add</button>
+            <!-- Add Sub-Tab -->
+            <div id="basic-add" class="sub-tab-content active">
+                <div class="calc-card">
+                    <h2>Addition (Up to 100 Terms)</h2>
+                    <div class="input-group">
+                        <input type="number" id="addNewInput" placeholder="Enter a number">
+                        <button onclick="addAdditionTerm()" class="add-btn">+ Add</button>
+                    </div>
+                    <div class="display-box" id="addDisplayBox">
+                        <div class="terms-display" id="addTermsDisplay"></div>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <button onclick="calculateAddition()" style="flex: 1;">= Calculate</button>
+                        <button onclick="continueAddition()" style="flex: 1; background-color: #4CAF50; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">+ Continue</button>
+                        <button onclick="clearAddition()" class="clear-btn" style="flex: 1;">Clear</button>
+                    </div>
+                    <div class="result" id="addResult"></div>
+                    <button onclick="copyAddResult()" id="copyAddBtn" style="display:none; margin-top:10px; width:100%; background-color:#2196F3; color:white; padding:10px; border:none; border-radius:5px; cursor:pointer;">📋 Copy Result</button>
                 </div>
-                <div class="display-box" id="subDisplayBox">
-                    <div class="terms-display" id="subTermsDisplay"></div>
-                </div>
-                <div style="display: flex; gap: 10px; margin-top: 10px;">
-                    <button onclick="calculateSubtraction()" style="flex: 1;">= Calculate</button>
-                    <button onclick="continueSubtraction()" style="flex: 1; background-color: #4CAF50; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">− Continue</button>
-                    <button onclick="clearSubtraction()" class="clear-btn" style="flex: 1;">Clear</button>
-                </div>
-                <div class="result" id="subResult"></div>
-                <button onclick="copySubResult()" id="copySubBtn" style="display:none; margin-top:10px; width:100%; background-color:#2196F3; color:white; padding:10px; border:none; border-radius:5px; cursor:pointer;">📋 Copy Result</button>
             </div>
-        </div>
 
-        <!-- MULTIPLICATION TAB -->
-        <div id="multiplication" class="tab-content">
-            <div class="calc-card">
-                <h2>Multiplication (Up to 100 Terms)</h2>
-                <div class="input-group">
-                    <input type="number" id="mulNewInput" placeholder="Enter a number">
-                    <button onclick="addMultiplicationTerm()" class="add-btn">+ Add</button>
+            <!-- Subtraction Sub-Tab -->
+            <div id="basic-sub" class="sub-tab-content">
+                <div class="calc-card">
+                    <h2>Subtraction (Up to 100 Terms)</h2>
+                    <div class="input-group">
+                        <input type="number" id="subNewInput" placeholder="Enter a number">
+                        <button onclick="addSubtractionTerm()" class="add-btn">+ Add</button>
+                    </div>
+                    <div class="display-box" id="subDisplayBox">
+                        <div class="terms-display" id="subTermsDisplay"></div>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <button onclick="calculateSubtraction()" style="flex: 1;">= Calculate</button>
+                        <button onclick="continueSubtraction()" style="flex: 1; background-color: #4CAF50; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">− Continue</button>
+                        <button onclick="clearSubtraction()" class="clear-btn" style="flex: 1;">Clear</button>
+                    </div>
+                    <div class="result" id="subResult"></div>
+                    <button onclick="copySubResult()" id="copySubBtn" style="display:none; margin-top:10px; width:100%; background-color:#2196F3; color:white; padding:10px; border:none; border-radius:5px; cursor:pointer;">📋 Copy Result</button>
                 </div>
-                <div class="display-box" id="mulDisplayBox">
-                    <div class="terms-display" id="mulTermsDisplay"></div>
-                </div>
-                <div style="display: flex; gap: 10px; margin-top: 10px;">
-                    <button onclick="calculateMultiplication()" style="flex: 1;">= Calculate</button>
-                    <button onclick="continueMultiplication()" style="flex: 1; background-color: #4CAF50; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">× Continue</button>
-                    <button onclick="clearMultiplication()" class="clear-btn" style="flex: 1;">Clear</button>
-                </div>
-                <div class="result" id="mulResult"></div>
-                <button onclick="copyMulResult()" id="copyMulBtn" style="display:none; margin-top:10px; width:100%; background-color:#2196F3; color:white; padding:10px; border:none; border-radius:5px; cursor:pointer;">📋 Copy Result</button>
             </div>
-        </div>
 
-        <!-- DIVISION TAB -->
-        <div id="division" class="tab-content">
-            <div class="calc-card">
-                <h2>Division (Sequential)</h2>
-                <div class="input-group">
-                    <input type="number" id="divNewInput" placeholder="Enter a number">
-                    <button onclick="addDivisionTerm()" class="add-btn">+ Add</button>
+            <!-- Multiplication Sub-Tab -->
+            <div id="basic-mul" class="sub-tab-content">
+                <div class="calc-card">
+                    <h2>Multiplication (Up to 100 Terms)</h2>
+                    <div class="input-group">
+                        <input type="number" id="mulNewInput" placeholder="Enter a number">
+                        <button onclick="addMultiplicationTerm()" class="add-btn">+ Add</button>
+                    </div>
+                    <div class="display-box" id="mulDisplayBox">
+                        <div class="terms-display" id="mulTermsDisplay"></div>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <button onclick="calculateMultiplication()" style="flex: 1;">= Calculate</button>
+                        <button onclick="continueMultiplication()" style="flex: 1; background-color: #4CAF50; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">× Continue</button>
+                        <button onclick="clearMultiplication()" class="clear-btn" style="flex: 1;">Clear</button>
+                    </div>
+                    <div class="result" id="mulResult"></div>
+                    <button onclick="copyMulResult()" id="copyMulBtn" style="display:none; margin-top:10px; width:100%; background-color:#2196F3; color:white; padding:10px; border:none; border-radius:5px; cursor:pointer;">📋 Copy Result</button>
                 </div>
-                <div class="display-box" id="divDisplayBox">
-                    <div class="terms-display" id="divTermsDisplay"></div>
+            </div>
+
+            <!-- Division Sub-Tab -->
+            <div id="basic-div" class="sub-tab-content">
+                <div class="calc-card">
+                    <h2>Division (Sequential)</h2>
+                    <div class="input-group">
+                        <input type="number" id="divNewInput" placeholder="Enter a number">
+                        <button onclick="addDivisionTerm()" class="add-btn">+ Add</button>
+                    </div>
+                    <div class="display-box" id="divDisplayBox">
+                        <div class="terms-display" id="divTermsDisplay"></div>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <button onclick="calculateDivision()" style="flex: 1;">= Calculate</button>
+                        <button onclick="continueDivision()" style="flex: 1; background-color: #4CAF50; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">÷ Continue</button>
+                        <button onclick="clearDivision()" class="clear-btn" style="flex: 1;">Clear</button>
+                    </div>
+                    <div class="result" id="divResult"></div>
+                    <button onclick="copyDivResult()" id="copyDivBtn" style="display:none; margin-top:10px; width:100%; background-color:#2196F3; color:white; padding:10px; border:none; border-radius:5px; cursor:pointer;">📋 Copy Result</button>
                 </div>
-                <div style="display: flex; gap: 10px; margin-top: 10px;">
-                    <button onclick="calculateDivision()" style="flex: 1;">= Calculate</button>
-                    <button onclick="continueDivision()" style="flex: 1; background-color: #4CAF50; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">÷ Continue</button>
-                    <button onclick="clearDivision()" class="clear-btn" style="flex: 1;">Clear</button>
-                </div>
-                <div class="result" id="divResult"></div>
-                <button onclick="copyDivResult()" id="copyDivBtn" style="display:none; margin-top:10px; width:100%; background-color:#2196F3; color:white; padding:10px; border:none; border-radius:5px; cursor:pointer;">📋 Copy Result</button>
             </div>
         </div>
 
@@ -981,7 +988,7 @@
     <footer>
         <p>&copy; 2025 All-in-One Calculator | Built with HTML, CSS & JavaScript
             <button id="restoreAdsBtn" onclick="restoreAds()" class="restore-ads">Restore Ads</button>
-        
+            <span id="visitorCounter" style="margin-left:16px; font-weight:700;">Visitors: —</span>
         </p>
     </footer>
 
