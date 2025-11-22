@@ -346,6 +346,18 @@ footer {
     margin-top: 50px;
 }
 
+.restore-ads {
+    margin-left: 12px;
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.18);
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+}
+.restore-ads:hover { background: rgba(255,255,255,0.06); }
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .navbar h1 {
@@ -377,4 +389,126 @@ footer {
     .main-container {
         padding: 0 15px;
     }
+}
+
+/* Advertisement boxes */
+.ad-box {
+    position: fixed;
+    width: 140px;
+    max-width: 18%;
+    background: rgba(255,255,255,0.95);
+    border: 1px solid rgba(16,24,40,0.06);
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 8px 30px rgba(2,6,23,0.12);
+    z-index: 220;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+#adA {
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#adB {
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.ad-box a {
+    color: var(--accent-1);
+    text-decoration: none;
+    display: block;
+    width: 100%;
+}
+
+.ad-box img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 6px;
+}
+
+.ad-close {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    background: rgba(0,0,0,0.06);
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ad-close:hover {
+    background: rgba(0,0,0,0.12);
+}
+
+/* transitions for smoother show/hide */
+.ad-box {
+    transition: opacity 280ms ease, transform 280ms cubic-bezier(.2,.8,.2,1);
+    will-change: opacity, transform;
+}
+
+.ad-box.ad-hidden {
+    opacity: 0;
+    transform: scale(0.96) translateY(6px);
+    pointer-events: none;
+}
+
+.ad-box.ad-visible {
+    opacity: 1;
+    transform: none;
+}
+
+/* Mobile: place ads top and bottom and avoid covering content */
+@media (max-width: 768px) {
+    .ad-box {
+        width: 100%;
+        max-width: none;
+        height: 56px;
+        padding: 8px 12px;
+        border-radius: 0;
+    }
+    #adA {
+        left: 0;
+        right: 0;
+        top: 0;
+        transform: none;
+        position: fixed;
+    }
+    #adB {
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: auto;
+        transform: none;
+        position: fixed;
+    }
+    .main-container {
+        padding-top: 74px; /* leave space for top ad */
+        padding-bottom: 74px; /* leave space for bottom ad */
+    }
+}
+
+/* Wide screens: move ads further out so they sit outside centered container */
+/* Removed wide-screen side-offset placement so ads remain near page edges */
+@media (min-width: 1200px) {
+    .ad-box { width: 300px; padding: 12px; }
+    /* keep default left/right offsets (10px) rather than centering offsets */
+    #adA { left: 10px; top: 50%; transform: translateY(-50%); }
+    #adB { right: 10px; top: 50%; transform: translateY(-50%); }
 }

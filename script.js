@@ -920,68 +920,99 @@ function clearRatioFields() {
 function calculateCircleArea() {
     const radiusRaw = document.getElementById('circleRadius').value.trim();
     const areaRaw = document.getElementById('circleArea')?.value.trim() || '';
+    const perimeterRaw = document.getElementById('circlePerimeter')?.value.trim() || '';
     const unit = document.getElementById('circleUnit').value;
-    
+
     const toNum = v => (v === '' ? null : parseFloat(v));
     const r = toNum(radiusRaw);
     const area = toNum(areaRaw);
-    
+    const p = toNum(perimeterRaw);
+
     if (r !== null) {
         const computedArea = Math.PI * r * r;
+        const computedPerimeter = 2 * Math.PI * r;
         const radiusCm = convertLength(r, unit, 'cm');
         const radiusM = convertLength(r, unit, 'm');
         const areaCm = convertArea(computedArea, unit, 'cm');
         const areaM = convertArea(computedArea, unit, 'm');
-        
-        const resultHTML = `<strong>Radius:</strong> ${formatResult(radiusCm)} cm / ${formatResult(radiusM)} m<br>
-                           <strong>Area:</strong> ${formatResult(areaCm)} cm² / ${formatResult(areaM)} m²`;
+        const resultHTML = `<strong>Radius:</strong> ${formatResult(radiusCm)} cm / ${formatResult(radiusM)} m<br>` +
+                           `<strong>Perimeter:</strong> ${formatResult(computedPerimeter)} ${unit}<br>` +
+                           `<strong>Area:</strong> ${formatResult(areaCm)} cm² / ${formatResult(areaM)} m²`;
+        showResult('circleAreaResult', resultHTML);
+    } else if (p !== null && p > 0) {
+        // perimeter given -> r = p / (2π)
+        const computedRadius = p / (2 * Math.PI);
+        const computedArea = Math.PI * computedRadius * computedRadius;
+        const radiusCm = convertLength(computedRadius, unit, 'cm');
+        const radiusM = convertLength(computedRadius, unit, 'm');
+        const areaCm = convertArea(computedArea, unit, 'cm');
+        const areaM = convertArea(computedArea, unit, 'm');
+        const resultHTML = `<strong>Perimeter:</strong> ${formatResult(p)} ${unit}<br>` +
+                           `<strong>Radius (computed):</strong> ${formatResult(radiusCm)} cm / ${formatResult(radiusM)} m<br>` +
+                           `<strong>Area:</strong> ${formatResult(areaCm)} cm² / ${formatResult(areaM)} m²`;
         showResult('circleAreaResult', resultHTML);
     } else if (area !== null && area > 0) {
         const computedRadius = Math.sqrt(area / Math.PI);
+        const computedPerimeter = 2 * Math.PI * computedRadius;
         const radiusCm = convertLength(computedRadius, unit, 'cm');
         const radiusM = convertLength(computedRadius, unit, 'm');
         const areaCm = convertArea(area, unit, 'cm');
         const areaM = convertArea(area, unit, 'm');
-        
-        const resultHTML = `<strong>Radius (computed):</strong> ${formatResult(radiusCm)} cm / ${formatResult(radiusM)} m<br>
-                           <strong>Area:</strong> ${formatResult(areaCm)} cm² / ${formatResult(areaM)} m²`;
+        const resultHTML = `<strong>Radius (computed):</strong> ${formatResult(radiusCm)} cm / ${formatResult(radiusM)} m<br>` +
+                           `<strong>Perimeter:</strong> ${formatResult(computedPerimeter)} ${unit}<br>` +
+                           `<strong>Area:</strong> ${formatResult(areaCm)} cm² / ${formatResult(areaM)} m²`;
         showResult('circleAreaResult', resultHTML);
     } else {
-        showResult('circleAreaResult', 'Please enter a valid Radius or Area', false);
+        showResult('circleAreaResult', 'Please enter a valid Radius, Perimeter or Area', false);
     }
 }
 
 function calculateSquareArea() {
     const sideRaw = document.getElementById('squareSide').value.trim();
     const areaRaw = document.getElementById('squareArea')?.value.trim() || '';
+    const perimeterRaw = document.getElementById('squarePerimeter')?.value.trim() || '';
     const unit = document.getElementById('squareUnit').value;
-    
+
     const toNum = v => (v === '' ? null : parseFloat(v));
     const s = toNum(sideRaw);
     const area = toNum(areaRaw);
-    
+    const p = toNum(perimeterRaw);
+
     if (s !== null && s > 0) {
         const computedArea = s * s;
+        const computedPerimeter = 4 * s;
         const sideCm = convertLength(s, unit, 'cm');
         const sideM = convertLength(s, unit, 'm');
         const areaCm = convertArea(computedArea, unit, 'cm');
         const areaM = convertArea(computedArea, unit, 'm');
-        
-        const resultHTML = `<strong>Side:</strong> ${formatResult(sideCm)} cm / ${formatResult(sideM)} m<br>
-                           <strong>Area:</strong> ${formatResult(areaCm)} cm² / ${formatResult(areaM)} m²`;
+        const resultHTML = `<strong>Side:</strong> ${formatResult(sideCm)} cm / ${formatResult(sideM)} m<br>` +
+                           `<strong>Perimeter:</strong> ${formatResult(computedPerimeter)} ${unit}<br>` +
+                           `<strong>Area:</strong> ${formatResult(areaCm)} cm² / ${formatResult(areaM)} m²`;
+        showResult('squareAreaResult', resultHTML);
+    } else if (p !== null && p > 0) {
+        const computedSide = p / 4;
+        const computedArea = computedSide * computedSide;
+        const sideCm = convertLength(computedSide, unit, 'cm');
+        const sideM = convertLength(computedSide, unit, 'm');
+        const areaCm = convertArea(computedArea, unit, 'cm');
+        const areaM = convertArea(computedArea, unit, 'm');
+        const resultHTML = `<strong>Perimeter:</strong> ${formatResult(p)} ${unit}<br>` +
+                           `<strong>Side (computed):</strong> ${formatResult(sideCm)} cm / ${formatResult(sideM)} m<br>` +
+                           `<strong>Area:</strong> ${formatResult(areaCm)} cm² / ${formatResult(areaM)} m²`;
         showResult('squareAreaResult', resultHTML);
     } else if (area !== null && area > 0) {
         const computedSide = Math.sqrt(area);
+        const computedPerimeter = 4 * computedSide;
         const sideCm = convertLength(computedSide, unit, 'cm');
         const sideM = convertLength(computedSide, unit, 'm');
         const areaCm = convertArea(area, unit, 'cm');
         const areaM = convertArea(area, unit, 'm');
-        
-        const resultHTML = `<strong>Side (computed):</strong> ${formatResult(sideCm)} cm / ${formatResult(sideM)} m<br>
-                           <strong>Area:</strong> ${formatResult(areaCm)} cm² / ${formatResult(areaM)} m²`;
+        const resultHTML = `<strong>Side (computed):</strong> ${formatResult(sideCm)} cm / ${formatResult(sideM)} m<br>` +
+                           `<strong>Perimeter:</strong> ${formatResult(computedPerimeter)} ${unit}<br>` +
+                           `<strong>Area:</strong> ${formatResult(areaCm)} cm² / ${formatResult(areaM)} m²`;
         showResult('squareAreaResult', resultHTML);
     } else {
-        showResult('squareAreaResult', 'Please enter a valid Side or Area', false);
+        showResult('squareAreaResult', 'Please enter a valid Side, Perimeter or Area', false);
     }
 }
 
@@ -989,6 +1020,7 @@ function calculateRectangleArea() {
     const lengthRaw = document.getElementById('rectLength').value.trim();
     const widthRaw = document.getElementById('rectWidth').value.trim();
     const areaRaw = document.getElementById('rectArea')?.value.trim() || '';
+    const perimRaw = document.getElementById('rectPerimeter')?.value.trim() || '';
     const lengthUnit = document.getElementById('rectLengthUnit').value;
     const widthUnit = document.getElementById('rectWidthUnit').value;
 
@@ -996,7 +1028,9 @@ function calculateRectangleArea() {
     const l = toNum(lengthRaw);
     const w = toNum(widthRaw);
     const area = toNum(areaRaw);
+    const p = toNum(perimRaw);
 
+    // If both sides known
     if (l !== null && w !== null && l > 0 && w > 0) {
         const lM = convertLength(l, lengthUnit, 'm');
         const wM = convertLength(w, widthUnit, 'm');
@@ -1004,21 +1038,60 @@ function calculateRectangleArea() {
         const areaCm = convertArea(areaM, 'm', 'cm');
         const lCm = convertLength(l, lengthUnit, 'cm');
         const wCm = convertLength(w, widthUnit, 'cm');
+        const perim = 2 * (l + w);
 
-        const resultHTML = `<strong>Length:</strong> ${formatResult(lCm)} cm / ${formatResult(lM)} m<br>
-                           <strong>Width:</strong> ${formatResult(wCm)} cm / ${formatResult(wM)} m<br>
-                           <strong>Area:</strong> ${formatResult(areaCm)} cm² / ${formatResult(areaM)} m²`;
+        const resultHTML = `<strong>Length:</strong> ${formatResult(lCm)} cm / ${formatResult(lM)} m<br>` +
+                           `<strong>Width:</strong> ${formatResult(wCm)} cm / ${formatResult(wM)} m<br>` +
+                           `<strong>Perimeter:</strong> ${formatResult(perim)} ${lengthUnit}<br>` +
+                           `<strong>Area:</strong> ${formatResult(areaCm)} cm² / ${formatResult(areaM)} m²`;
         showResult('rectAreaResult', resultHTML);
-    } else if (area !== null && l !== null && l > 0) {
+        return;
+    }
+
+    // If perimeter given and one side known -> compute other
+    if (p !== null && p > 0) {
+        // p = 2*(l + w) -> l + w = p/2
+        const half = p / 2;
+        if (l !== null && (w === null || w === 0)) {
+            const computedW = half - l;
+            if (computedW <= 0) { showResult('rectAreaResult', 'Invalid perimeter/length combination', false); return; }
+            const lM = convertLength(l, lengthUnit, 'm');
+            const wM = convertLength(computedW, lengthUnit, 'm');
+            const areaM = lM * wM;
+            const areaCm = convertArea(areaM, 'm', 'cm');
+            const resultHTML = `<strong>Length:</strong> ${formatResult(convertLength(l, lengthUnit, 'cm'))} cm / ${formatResult(lM)} m<br>` +
+                               `<strong>Width (computed):</strong> ${formatResult(convertLength(computedW, lengthUnit, 'cm'))} cm / ${formatResult(wM)} m<br>` +
+                               `<strong>Perimeter:</strong> ${formatResult(p)} ${lengthUnit}<br>` +
+                               `<strong>Area:</strong> ${formatResult(areaCm)} cm² / ${formatResult(areaM)} m²`;
+            showResult('rectAreaResult', resultHTML);
+            return;
+        } else if (w !== null && (l === null || l === 0)) {
+            const computedL = half - w;
+            if (computedL <= 0) { showResult('rectAreaResult', 'Invalid perimeter/width combination', false); return; }
+            const lM = convertLength(computedL, widthUnit, 'm');
+            const wM = convertLength(w, widthUnit, 'm');
+            const areaM = lM * wM;
+            const areaCm = convertArea(areaM, 'm', 'cm');
+            const resultHTML = `<strong>Length (computed):</strong> ${formatResult(convertLength(computedL, widthUnit, 'cm'))} cm / ${formatResult(lM)} m<br>` +
+                               `<strong>Width:</strong> ${formatResult(convertLength(w, widthUnit, 'cm'))} cm / ${formatResult(wM)} m<br>` +
+                               `<strong>Perimeter:</strong> ${formatResult(p)} ${widthUnit}<br>` +
+                               `<strong>Area:</strong> ${formatResult(areaCm)} cm² / ${formatResult(areaM)} m²`;
+            showResult('rectAreaResult', resultHTML);
+            return;
+        }
+    }
+
+    // Area-based computations (existing behavior)
+    if (area !== null && l !== null && l > 0) {
         const lM = convertLength(l, lengthUnit, 'm');
         const areaM = convertArea(area, lengthUnit === 'cm' ? 'cm' : 'm', 'm');
         const computedWm = areaM / lM;
         const computedWcm = convertLength(computedWm, 'm', 'cm');
         const lCm = convertLength(l, lengthUnit, 'cm');
 
-        const resultHTML = `<strong>Length:</strong> ${formatResult(lCm)} cm / ${formatResult(lM)} m<br>
-                           <strong>Width (computed):</strong> ${formatResult(computedWcm)} cm / ${formatResult(computedWm)} m<br>
-                           <strong>Area:</strong> ${formatResult(convertArea(areaM, 'm', 'cm'))} cm² / ${formatResult(areaM)} m²`;
+        const resultHTML = `<strong>Length:</strong> ${formatResult(lCm)} cm / ${formatResult(lM)} m<br>` +
+                           `<strong>Width (computed):</strong> ${formatResult(computedWcm)} cm / ${formatResult(computedWm)} m<br>` +
+                           `<strong>Area:</strong> ${formatResult(convertArea(areaM, 'm', 'cm'))} cm² / ${formatResult(areaM)} m²`;
         showResult('rectAreaResult', resultHTML);
     } else if (area !== null && w !== null && w > 0) {
         const wM = convertLength(w, widthUnit, 'm');
@@ -1027,12 +1100,12 @@ function calculateRectangleArea() {
         const computedLcm = convertLength(computedLm, 'm', 'cm');
         const wCm = convertLength(w, widthUnit, 'cm');
 
-        const resultHTML = `<strong>Length (computed):</strong> ${formatResult(computedLcm)} cm / ${formatResult(computedLm)} m<br>
-                           <strong>Width:</strong> ${formatResult(wCm)} cm / ${formatResult(wM)} m<br>
-                           <strong>Area:</strong> ${formatResult(convertArea(areaM, 'm', 'cm'))} cm² / ${formatResult(areaM)} m²`;
+        const resultHTML = `<strong>Length (computed):</strong> ${formatResult(computedLcm)} cm / ${formatResult(computedLm)} m<br>` +
+                           `<strong>Width:</strong> ${formatResult(wCm)} cm / ${formatResult(wM)} m<br>` +
+                           `<strong>Area:</strong> ${formatResult(convertArea(areaM, 'm', 'cm'))} cm² / ${formatResult(areaM)} m²`;
         showResult('rectAreaResult', resultHTML);
     } else {
-        showResult('rectAreaResult', 'Please enter Length and Width, or Area and one dimension', false);
+        showResult('rectAreaResult', 'Please enter Length and Width, or Area and one dimension, or Perimeter and one known side', false);
     }
 }
 
@@ -1040,6 +1113,10 @@ function calculateTriangleArea() {
     const baseRaw = document.getElementById('triBase').value.trim();
     const heightRaw = document.getElementById('triHeight').value.trim();
     const areaRaw = document.getElementById('triArea')?.value.trim() || '';
+    const sideARaw = document.getElementById('triSideA')?.value.trim() || '';
+    const sideBRaw = document.getElementById('triSideB')?.value.trim() || '';
+    const sideCRaw = document.getElementById('triSideC')?.value.trim() || '';
+    const perimRaw = document.getElementById('triPerimeter')?.value.trim() || '';
     const baseUnit = document.getElementById('triBaseUnit').value;
     const heightUnit = document.getElementById('triHeightUnit').value;
 
@@ -1047,7 +1124,48 @@ function calculateTriangleArea() {
     const b = toNum(baseRaw);
     const h = toNum(heightRaw);
     const area = toNum(areaRaw);
+    const a = toNum(sideARaw);
+    const bb = toNum(sideBRaw);
+    const c = toNum(sideCRaw);
+    const p = toNum(perimRaw);
 
+    // If three sides provided -> perimeter and area (Heron's formula)
+    if (a !== null && bb !== null && c !== null && a > 0 && bb > 0 && c > 0) {
+        const perim = a + bb + c;
+        const s = perim / 2;
+        const areaVal = Math.sqrt(Math.max(0, s * (s - a) * (s - bb) * (s - c)));
+        const resultHTML = `<strong>Sides:</strong> a=${formatResult(a)}, b=${formatResult(bb)}, c=${formatResult(c)}<br>` +
+                           `<strong>Perimeter:</strong> ${formatResult(perim)}<br>` +
+                           `<strong>Area (Heron):</strong> ${formatResult(areaVal)}`;
+        showResult('triAreaResult', resultHTML);
+        return;
+    }
+
+    // If perimeter given and exactly two sides known -> compute third
+    if (p !== null && p > 0) {
+        const known = [a, bb, c].filter(x => x !== null);
+        const knownSum = (a || 0) + (bb || 0) + (c || 0);
+        const knownCount = [a, bb, c].filter(x => x !== null).length;
+        if (knownCount === 2) {
+            const computedThird = p - knownSum;
+            if (computedThird <= 0) { showResult('triAreaResult', 'Invalid perimeter / sides combination', false); return; }
+            // assign to missing
+            let newA = a, newB = bb, newC = c;
+            if (a === null) newA = computedThird;
+            else if (bb === null) newB = computedThird;
+            else if (c === null) newC = computedThird;
+            const perim = newA + newB + newC;
+            const s = perim / 2;
+            const areaVal = Math.sqrt(Math.max(0, s * (s - newA) * (s - newB) * (s - newC)));
+            const resultHTML = `<strong>Computed side:</strong> ${formatResult(computedThird)}<br>` +
+                               `<strong>Perimeter:</strong> ${formatResult(perim)}<br>` +
+                               `<strong>Area (Heron):</strong> ${formatResult(areaVal)}`;
+            showResult('triAreaResult', resultHTML);
+            return;
+        }
+    }
+
+    // Fallback: use base & height behavior
     if (b !== null && h !== null && b > 0 && h > 0) {
         const bM = convertLength(b, baseUnit, 'm');
         const hM = convertLength(h, heightUnit, 'm');
@@ -1055,9 +1173,9 @@ function calculateTriangleArea() {
         const areaCm = convertArea(areaM, 'm', 'cm');
         const bCm = convertLength(b, baseUnit, 'cm');
         const hCm = convertLength(h, heightUnit, 'cm');
-        const resultHTML = `<strong>Base:</strong> ${formatResult(bCm)} cm / ${formatResult(bM)} m<br>
-                           <strong>Height:</strong> ${formatResult(hCm)} cm / ${formatResult(hM)} m<br>
-                           <strong>Area:</strong> ${formatResult(areaCm)} cm² / ${formatResult(areaM)} m²`;
+        const resultHTML = `<strong>Base:</strong> ${formatResult(bCm)} cm / ${formatResult(bM)} m<br>` +
+                           `<strong>Height:</strong> ${formatResult(hCm)} cm / ${formatResult(hM)} m<br>` +
+                           `<strong>Area:</strong> ${formatResult(areaCm)} cm² / ${formatResult(areaM)} m²`;
         showResult('triAreaResult', resultHTML);
     } else if (area !== null && b !== null && b > 0) {
         const bM = convertLength(b, baseUnit, 'm');
@@ -1065,9 +1183,9 @@ function calculateTriangleArea() {
         const computedHm = (2 * areaM) / bM;
         const computedHcm = convertLength(computedHm, 'm', 'cm');
         const bCm = convertLength(b, baseUnit, 'cm');
-        const resultHTML = `<strong>Base:</strong> ${formatResult(bCm)} cm / ${formatResult(bM)} m<br>
-                           <strong>Height (computed):</strong> ${formatResult(computedHcm)} cm / ${formatResult(computedHm)} m<br>
-                           <strong>Area:</strong> ${formatResult(convertArea(areaM, 'm', 'cm'))} cm² / ${formatResult(areaM)} m²`;
+        const resultHTML = `<strong>Base:</strong> ${formatResult(bCm)} cm / ${formatResult(bM)} m<br>` +
+                           `<strong>Height (computed):</strong> ${formatResult(computedHcm)} cm / ${formatResult(computedHm)} m<br>` +
+                           `<strong>Area:</strong> ${formatResult(convertArea(areaM, 'm', 'cm'))} cm² / ${formatResult(areaM)} m²`;
         showResult('triAreaResult', resultHTML);
     } else if (area !== null && h !== null && h > 0) {
         const hM = convertLength(h, heightUnit, 'm');
@@ -1075,12 +1193,12 @@ function calculateTriangleArea() {
         const computedBm = (2 * areaM) / hM;
         const computedBcm = convertLength(computedBm, 'm', 'cm');
         const hCm = convertLength(h, heightUnit, 'cm');
-        const resultHTML = `<strong>Base (computed):</strong> ${formatResult(computedBcm)} cm / ${formatResult(computedBm)} m<br>
-                           <strong>Height:</strong> ${formatResult(hCm)} cm / ${formatResult(hM)} m<br>
-                           <strong>Area:</strong> ${formatResult(convertArea(areaM, 'm', 'cm'))} cm² / ${formatResult(areaM)} m²`;
+        const resultHTML = `<strong>Base (computed):</strong> ${formatResult(computedBcm)} cm / ${formatResult(computedBm)} m<br>` +
+                           `<strong>Height:</strong> ${formatResult(hCm)} cm / ${formatResult(hM)} m<br>` +
+                           `<strong>Area:</strong> ${formatResult(convertArea(areaM, 'm', 'cm'))} cm² / ${formatResult(areaM)} m²`;
         showResult('triAreaResult', resultHTML);
     } else {
-        showResult('triAreaResult', 'Please enter Base and Height, or Area and one dimension', false);
+        showResult('triAreaResult', 'Please enter Base and Height, or Area and one dimension, or provide sides/perimeter', false);
     }
 }
 
@@ -1088,6 +1206,7 @@ function calculateEllipseArea() {
     const majorRaw = document.getElementById('ellipseMajor').value.trim();
     const minorRaw = document.getElementById('ellipseMinor').value.trim();
     const areaRaw = document.getElementById('ellipseArea')?.value.trim() || '';
+    const perimRaw = document.getElementById('ellipsePerimeter')?.value.trim() || '';
     const majorUnit = document.getElementById('ellipseMajorUnit').value;
     const minorUnit = document.getElementById('ellipseMinorUnit').value;
     
@@ -1095,6 +1214,7 @@ function calculateEllipseArea() {
     const a = toNum(majorRaw);
     const b = toNum(minorRaw);
     const area = toNum(areaRaw);
+    const p = toNum(perimRaw);
 
     if (a !== null && b !== null && a > 0 && b > 0) {
         const aM = convertLength(a, majorUnit, 'm');
@@ -1103,9 +1223,16 @@ function calculateEllipseArea() {
         const areaCm = convertArea(areaM, 'm', 'cm');
         const aCm = convertLength(a, majorUnit, 'cm');
         const bCm = convertLength(b, minorUnit, 'cm');
-        const resultHTML = `<strong>Semi-Major Axis (a):</strong> ${formatResult(aCm)} cm / ${formatResult(aM)} m<br>
-                           <strong>Semi-Minor Axis (b):</strong> ${formatResult(bCm)} cm / ${formatResult(bM)} m<br>
-                           <strong>Area:</strong> ${formatResult(areaCm)} cm² / ${formatResult(areaM)} m²`;
+        // Ramanujan approximation for circumference
+        const ellipseCirc = (aa, bb) => {
+            return Math.PI * (3 * (aa + bb) - Math.sqrt((3 * aa + bb) * (aa + 3 * bb)));
+        };
+
+        const circ = ellipseCirc(a, b);
+        const resultHTML = `<strong>Semi-Major Axis (a):</strong> ${formatResult(aCm)} cm / ${formatResult(aM)} m<br>` +
+                           `<strong>Semi-Minor Axis (b):</strong> ${formatResult(bCm)} cm / ${formatResult(bM)} m<br>` +
+                           `<strong>Perimeter (approx):</strong> ${formatResult(circ)} ${majorUnit}<br>` +
+                           `<strong>Area:</strong> ${formatResult(areaCm)} cm² / ${formatResult(areaM)} m²`;
         showResult('ellipseAreaResult', resultHTML);
     } else if (area !== null && a !== null && a > 0) {
         const aM = convertLength(a, majorUnit, 'm');
@@ -1128,13 +1255,51 @@ function calculateEllipseArea() {
                            <strong>Area:</strong> ${formatResult(convertArea(areaM, 'm', 'cm'))} cm² / ${formatResult(areaM)} m²`;
         showResult('ellipseAreaResult', resultHTML);
     } else {
-        showResult('ellipseAreaResult', 'Please enter both axes or Area and one axis', false);
+        // If perimeter provided along with one axis, try to solve for the other axis numerically
+        if (p !== null && p > 0) {
+            if (a !== null && a > 0 && (b === null || b <= 0)) {
+                // solve for b: ellipseCirc(a,b) ~= p
+                const ellipseCirc = (aa, bb) => Math.PI * (3 * (aa + bb) - Math.sqrt((3 * aa + bb) * (aa + 3 * bb)));
+                // binary search for b
+                let low = 1e-9, high = Math.max(a, 1) * 1e3;
+                for (let i = 0; i < 60; i++) {
+                    const mid = (low + high) / 2;
+                    const c = ellipseCirc(a, mid);
+                    if (c > p) high = mid; else low = mid;
+                }
+                const computedB = (low + high) / 2;
+                const computedBm = convertLength(computedB, minorUnit, 'm');
+                const computedAcm = convertLength(a, majorUnit, 'cm');
+                const resultHTML = `<strong>Semi-Major Axis (a):</strong> ${formatResult(convertLength(a, majorUnit, 'cm'))} cm<br>` +
+                                   `<strong>Semi-Minor Axis (b) (computed):</strong> ${formatResult(convertLength(computedB, minorUnit, 'cm'))} cm<br>` +
+                                   `<strong>Perimeter (approx):</strong> ${formatResult(p)} ${majorUnit}`;
+                showResult('ellipseAreaResult', resultHTML);
+                return;
+            } else if (b !== null && b > 0 && (a === null || a <= 0)) {
+                const ellipseCirc = (aa, bb) => Math.PI * (3 * (aa + bb) - Math.sqrt((3 * aa + bb) * (aa + 3 * bb)));
+                let low = 1e-9, high = Math.max(b, 1) * 1e3;
+                for (let i = 0; i < 60; i++) {
+                    const mid = (low + high) / 2;
+                    const c = ellipseCirc(mid, b);
+                    if (c > p) high = mid; else low = mid;
+                }
+                const computedA = (low + high) / 2;
+                const resultHTML = `<strong>Semi-Major Axis (a) (computed):</strong> ${formatResult(convertLength(computedA, majorUnit, 'cm'))} cm<br>` +
+                                   `<strong>Semi-Minor Axis (b):</strong> ${formatResult(convertLength(b, minorUnit, 'cm'))} cm<br>` +
+                                   `<strong>Perimeter (approx):</strong> ${formatResult(p)} ${majorUnit}`;
+                showResult('ellipseAreaResult', resultHTML);
+                return;
+            }
+        }
+        showResult('ellipseAreaResult', 'Please enter both axes or Area and one axis, or Perimeter and one axis', false);
     }
 }
 
 function calculateParallelogramArea() {
     const baseRaw = document.getElementById('paraBase').value.trim();
     const heightRaw = document.getElementById('paraHeight').value.trim();
+    const sideRaw = document.getElementById('paraSide')?.value.trim() || '';
+    const perimRaw = document.getElementById('paraPerimeter')?.value.trim() || '';
     const areaRaw = document.getElementById('paraArea')?.value.trim() || '';
     const baseUnit = document.getElementById('paraBaseUnit').value;
     const heightUnit = document.getElementById('paraHeightUnit').value;
@@ -1142,6 +1307,8 @@ function calculateParallelogramArea() {
     const toNum = v => (v === '' ? null : parseFloat(v));
     const b = toNum(baseRaw);
     const h = toNum(heightRaw);
+    const side = toNum(sideRaw);
+    const p = toNum(perimRaw);
     const area = toNum(areaRaw);
 
     if (b !== null && h !== null && b > 0 && h > 0) {
@@ -1151,9 +1318,14 @@ function calculateParallelogramArea() {
         const areaCm = convertArea(areaM, 'm', 'cm');
         const bCm = convertLength(b, baseUnit, 'cm');
         const hCm = convertLength(h, heightUnit, 'cm');
-        const resultHTML = `<strong>Base:</strong> ${formatResult(bCm)} cm / ${formatResult(bM)} m<br>
-                           <strong>Height:</strong> ${formatResult(hCm)} cm / ${formatResult(hM)} m<br>
-                           <strong>Area:</strong> ${formatResult(areaCm)} cm² / ${formatResult(areaM)} m²`;
+        let resultHTML = `<strong>Base:</strong> ${formatResult(bCm)} cm / ${formatResult(bM)} m<br>` +
+                           `<strong>Height:</strong> ${formatResult(hCm)} cm / ${formatResult(hM)} m<br>` +
+                           `<strong>Area:</strong> ${formatResult(areaCm)} cm² / ${formatResult(areaM)} m²`;
+        if (side !== null && side > 0) {
+            resultHTML = `<strong>Base:</strong> ${formatResult(bCm)} cm / ${formatResult(bM)} m<br>` +
+                         `<strong>Side:</strong> ${formatResult(convertLength(side, baseUnit, 'cm'))} cm<br>` +
+                         resultHTML;
+        }
         showResult('paraAreaResult', resultHTML);
     } else if (area !== null && b !== null && b > 0) {
         const bM = convertLength(b, baseUnit, 'm');
@@ -1161,9 +1333,9 @@ function calculateParallelogramArea() {
         const computedHm = areaM / bM;
         const computedHcm = convertLength(computedHm, 'm', 'cm');
         const bCm = convertLength(b, baseUnit, 'cm');
-        const resultHTML = `<strong>Base:</strong> ${formatResult(bCm)} cm / ${formatResult(bM)} m<br>
-                           <strong>Height (computed):</strong> ${formatResult(computedHcm)} cm / ${formatResult(computedHm)} m<br>
-                           <strong>Area:</strong> ${formatResult(convertArea(areaM, 'm', 'cm'))} cm² / ${formatResult(areaM)} m²`;
+        const resultHTML = `<strong>Base:</strong> ${formatResult(bCm)} cm / ${formatResult(bM)} m<br>` +
+                           `<strong>Height (computed):</strong> ${formatResult(computedHm)} cm / ${formatResult(computedHm)} m<br>` +
+                           `<strong>Area:</strong> ${formatResult(convertArea(areaM, 'm', 'cm'))} cm² / ${formatResult(areaM)} m²`;
         showResult('paraAreaResult', resultHTML);
     } else if (area !== null && h !== null && h > 0) {
         const hM = convertLength(h, heightUnit, 'm');
@@ -1176,7 +1348,18 @@ function calculateParallelogramArea() {
                            <strong>Area:</strong> ${formatResult(convertArea(areaM, 'm', 'cm'))} cm² / ${formatResult(areaM)} m²`;
         showResult('paraAreaResult', resultHTML);
     } else {
-        showResult('paraAreaResult', 'Please enter Base and Height, or Area and one dimension', false);
+        // If perimeter and base known -> compute side
+        if (p !== null && p > 0 && b !== null && b > 0 && (side === null || side <= 0)) {
+            // Perimeter of parallelogram = 2*(base + side)
+            const computedSide = p / 2 - b;
+            if (computedSide <= 0) { showResult('paraAreaResult', 'Invalid perimeter/base combination', false); return; }
+            const resultHTML = `<strong>Base:</strong> ${formatResult(convertLength(b, baseUnit, 'cm'))} cm<br>` +
+                               `<strong>Side (computed):</strong> ${formatResult(convertLength(computedSide, baseUnit, 'cm'))} cm<br>` +
+                               `<strong>Perimeter:</strong> ${formatResult(p)} ${baseUnit}`;
+            showResult('paraAreaResult', resultHTML);
+            return;
+        }
+        showResult('paraAreaResult', 'Please enter Base and Height, or Area and one dimension, or Perimeter and base', false);
     }
 }
 
@@ -1185,6 +1368,9 @@ function calculateTrapezoidArea() {
     const base2Raw = document.getElementById('trapBase2').value.trim();
     const heightRaw = document.getElementById('trapHeight').value.trim();
     const areaRaw = document.getElementById('trapArea')?.value.trim() || '';
+    const sideARaw = document.getElementById('trapSideA')?.value.trim() || '';
+    const sideBRaw = document.getElementById('trapSideB')?.value.trim() || '';
+    const perimRaw = document.getElementById('trapPerimeter')?.value.trim() || '';
     const unit = document.getElementById('trapUnit').value;
     
     const toNum = v => (v === '' ? null : parseFloat(v));
@@ -1192,6 +1378,9 @@ function calculateTrapezoidArea() {
     const b2 = toNum(base2Raw);
     const h = toNum(heightRaw);
     const area = toNum(areaRaw);
+    const sideA = toNum(sideARaw);
+    const sideB = toNum(sideBRaw);
+    const p = toNum(perimRaw);
     
     if (b1 !== null && b2 !== null && h !== null && b1 > 0 && b2 > 0 && h > 0) {
         const computedArea = ((b1 + b2) * h) / 2;
@@ -1203,10 +1392,15 @@ function calculateTrapezoidArea() {
         const heightM = convertLength(h, unit, 'm');
         const areaCm = convertArea(computedArea, unit, 'cm');
         const areaM = convertArea(computedArea, unit, 'm');
-        const resultHTML = `<strong>Base 1:</strong> ${formatResult(b1Cm)} cm / ${formatResult(b1M)} m<br>
-                           <strong>Base 2:</strong> ${formatResult(b2Cm)} cm / ${formatResult(b2M)} m<br>
-                           <strong>Height:</strong> ${formatResult(heightCm)} cm / ${formatResult(heightM)} m<br>
-                           <strong>Area:</strong> ${formatResult(areaCm)} cm² / ${formatResult(areaM)} m²`;
+        let resultHTML = `<strong>Base 1:</strong> ${formatResult(b1Cm)} cm / ${formatResult(b1M)} m<br>` +
+                           `<strong>Base 2:</strong> ${formatResult(b2Cm)} cm / ${formatResult(b2M)} m<br>` +
+                           `<strong>Height:</strong> ${formatResult(heightCm)} cm / ${formatResult(heightM)} m<br>` +
+                           `<strong>Area:</strong> ${formatResult(areaCm)} cm² / ${formatResult(areaM)} m²`;
+        if (sideA !== null || sideB !== null) {
+            resultHTML = (sideA !== null ? `<strong>Side a:</strong> ${formatResult(convertLength(sideA, unit, 'cm'))} cm<br>` : '') +
+                         (sideB !== null ? `<strong>Side b:</strong> ${formatResult(convertLength(sideB, unit, 'cm'))} cm<br>` : '') +
+                         resultHTML;
+        }
         showResult('trapAreaResult', resultHTML);
     } else if (area !== null && b1 !== null && b2 !== null && b1 > 0 && b2 > 0) {
         const computedH = (2 * area) / (b1 + b2);
@@ -1218,13 +1412,27 @@ function calculateTrapezoidArea() {
         const heightM = convertLength(computedH, unit, 'm');
         const areaCm = convertArea(area, unit, 'cm');
         const areaM = convertArea(area, unit, 'm');
-        const resultHTML = `<strong>Base 1:</strong> ${formatResult(b1Cm)} cm / ${formatResult(b1M)} m<br>
-                           <strong>Base 2:</strong> ${formatResult(b2Cm)} cm / ${formatResult(b2M)} m<br>
-                           <strong>Height (computed):</strong> ${formatResult(heightCm)} cm / ${formatResult(heightM)} m<br>
-                           <strong>Area:</strong> ${formatResult(areaCm)} cm² / ${formatResult(areaM)} m²`;
+        const resultHTML = `<strong>Base 1:</strong> ${formatResult(b1Cm)} cm / ${formatResult(b1M)} m<br>` +
+                           `<strong>Base 2:</strong> ${formatResult(b2Cm)} cm / ${formatResult(b2M)} m<br>` +
+                           `<strong>Height (computed):</strong> ${formatResult(heightCm)} cm / ${formatResult(heightM)} m<br>` +
+                           `<strong>Area:</strong> ${formatResult(areaCm)} cm² / ${formatResult(areaM)} m²`;
         showResult('trapAreaResult', resultHTML);
     } else {
-        showResult('trapAreaResult', 'Please enter Base 1, Base 2, and Height, or Area and both bases', false);
+        // If perimeter given and exactly one non-parallel side missing, compute it
+        if (p !== null && p > 0) {
+            // Perimeter = b1 + b2 + sideA + sideB
+            const knownSides = [sideA, sideB].filter(x => x !== null).length;
+            if (knownSides === 1 && b1 !== null && b2 !== null) {
+                const sumKnown = (sideA || 0) + (sideB || 0) + (b1 || 0) + (b2 || 0);
+                const missing = p - sumKnown;
+                if (missing <= 0) { showResult('trapAreaResult', 'Invalid perimeter / sides combination', false); return; }
+                const resultHTML = `<strong>Computed side:</strong> ${formatResult(missing)} ${unit}<br>` +
+                                   `<strong>Perimeter:</strong> ${formatResult(p)} ${unit}`;
+                showResult('trapAreaResult', resultHTML);
+                return;
+            }
+        }
+        showResult('trapAreaResult', 'Please enter Base 1, Base 2, and Height (or sides), or Perimeter and known sides', false);
     }
 }
 
@@ -1970,7 +2178,7 @@ function insertLinear1VarFraction(fraction) {
 }
 
 // Solve linear equation in one variable: ax + b = c
-// Parse equation string like "2x + 5 = 13" or "(1/2)x - 3 = 7"
+// Parse equation string like "2x + 5 = 13" or "(1/2)x - 3 = 7" or "(4x+8)/4 = 6"
 function solveLinear1Var() {
     const equationStr = document.getElementById('lin1VarEquation').value.trim();
     
@@ -2001,34 +2209,83 @@ function solveLinear1Var() {
         return;
     }
     
-    // Rearrange: leftCoeff*x + leftConst = rightCoeff*x + rightConst
-    // => (leftCoeff - rightCoeff)*x = rightConst - leftConst
-    const a = leftCoeff - rightCoeff;
-    const b = rightConst - leftConst;
-    
-    if (a === 0) {
-        if (b === 0) {
-            showResult('lin1VarResult', 'Infinite solutions (identity).', false);
+    // Combine terms to a single-side form: (leftCoeff - rightCoeff) * x = (rightConst - leftConst)
+    const netCoeff = leftCoeff - rightCoeff;
+    const netConst = rightConst - leftConst;
+
+    // Handle no unique solution
+    if (Math.abs(netCoeff) < 1e-12) {
+        if (Math.abs(netConst) < 1e-12) {
+            showResult('lin1VarResult', '<strong>Infinite solutions</strong>', false);
         } else {
-            showResult('lin1VarResult', 'No solution (contradiction).', false);
+            showResult('lin1VarResult', '<strong>No solution</strong>', false);
         }
         return;
     }
-    
-    const x = b / a;
-    const resultHTML = `<strong>Solution:</strong><br>x = ${formatResult(x)}`;
+
+    const x = netConst / netCoeff;
+    const resultHTML = `<strong>x = ${formatResult(x)}</strong>`;
     showResult('lin1VarResult', resultHTML, true);
 }
 
-// Parse a linear expression (e.g., "2x + 5", "(1/2)x - 3", "x + 7")
+// Parse a linear expression (e.g., "2x + 5", "(1/2)x - 3", "x + 7", "(4x+8)/4")
 // Returns [coefficientOfX, constant]
 function parseLinearExpression(expr) {
     expr = expr.replace(/\s+/g, ''); // Remove spaces
+    // If the whole expression is wrapped in a single pair of parentheses, strip them.
+    // e.g. "(4x+8)" -> "4x+8" so terms split correctly.
+    while (expr.startsWith('(') && expr.endsWith(')')) {
+        // verify matching parentheses for the first char pair
+        let depth = 0;
+        let matchIndex = -1;
+        for (let i = 0; i < expr.length; i++) {
+            const ch = expr[i];
+            if (ch === '(') depth++;
+            else if (ch === ')') depth--;
+            if (depth === 0) { matchIndex = i; break; }
+        }
+        // only strip if the matching ')' is the last character
+        if (matchIndex === expr.length - 1) {
+            expr = expr.substring(1, expr.length - 1);
+        } else {
+            break;
+        }
+    }
+    
+    // Handle division at the top level: (numerator)/divisor
+    // Look for division not inside parentheses
+    let divIndex = -1;
+    let parenDepth = 0;
+    
+    for (let i = expr.length - 1; i >= 0; i--) {
+        const char = expr[i];
+        if (char === ')') parenDepth++;
+        if (char === '(') parenDepth--;
+        if (char === '/' && parenDepth === 0) {
+            divIndex = i;
+            break;
+        }
+    }
+    
+    if (divIndex > 0) {
+        // There's a top-level division
+        const numeratorStr = expr.substring(0, divIndex);
+        const divisorStr = expr.substring(divIndex + 1);
+        
+        const divisor = parseFraction(divisorStr);
+        if (divisor === null || divisor === 0) {
+            throw new Error(`Invalid divisor: ${divisorStr}`);
+        }
+        
+        // Parse numerator and divide coefficients and constants
+        const [numCoeffX, numConst] = parseLinearExpression(numeratorStr);
+        return [numCoeffX / divisor, numConst / divisor];
+    }
     
     let coeffX = 0;
     let constant = 0;
     
-    // Replace x with a placeholder to separate terms
+    // Split into terms by + and - at depth 0
     let terms = [];
     let current = '';
     let inParens = 0;
@@ -2389,5 +2646,144 @@ document.addEventListener('DOMContentLoaded', function() {
             if (el) el.addEventListener('click', fn);
         });
     } catch (e) { /* ignore */ }
+
+    // initialize ad visibility state (if user previously dismissed ads)
+    try { if (typeof initAdState === 'function') initAdState(); } catch (e) { /* ignore */ }
 });
+
+// ----------------- AD BOX CONTROLS -----------------
+function closeAd(adId) {
+    const el = document.getElementById(adId);
+    if (!el) return;
+    // animate out then hide
+    el.classList.add('ad-hidden');
+    // after transition, set display none to remove from tab order
+    setTimeout(() => { try { el.style.display = 'none'; } catch (e) {} }, 320);
+    try { localStorage.setItem('adHidden_' + adId, '1'); } catch (e) { /* ignore */ }
+}
+
+function initAdState() {
+    // initialize visibility and kick off lazy-loading/injection of ad content
+    ['adA', 'adB'].forEach(id => {
+        try {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const hidden = localStorage.getItem('adHidden_' + id);
+            if (hidden === '1') {
+                el.style.display = 'none';
+                el.classList.add('ad-hidden');
+            } else {
+                el.style.display = 'block';
+                // animate in
+                requestAnimationFrame(() => {
+                    el.classList.remove('ad-hidden');
+                    el.classList.add('ad-visible');
+                    setTimeout(() => el.classList.remove('ad-visible'), 420);
+                });
+            }
+
+            // Inject ad content depending on data-ad-type
+            loadAdSlot(el);
+        } catch (e) { /* ignore */ }
+    });
+}
+
+function restoreAds() {
+    ['adA', 'adB'].forEach(id => {
+        try {
+            localStorage.removeItem('adHidden_' + id);
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.style.display = 'block';
+            // show with animation
+            requestAnimationFrame(() => {
+                el.classList.remove('ad-hidden');
+                el.classList.add('ad-visible');
+                setTimeout(() => el.classList.remove('ad-visible'), 420);
+            });
+            // ensure ad content is (re)loaded
+            loadAdSlot(el);
+        } catch (e) { /* ignore */ }
+    });
+}
+
+// Ad storage mode removed: persistence always uses localStorage
+
+// Load ad content based on slot attributes
+function loadAdSlot(el) {
+    try {
+        const type = el.getAttribute('data-ad-type') || 'image';
+        if (type === 'image') {
+            // lazy-load image if present
+            const img = el.querySelector('.ad-img');
+            if (img && img.getAttribute('data-src')) {
+                // IntersectionObserver already handles loading; ensure it is observed
+                if (typeof initAdLazyLoad === 'function') initAdLazyLoad();
+            }
+        } else if (type === 'iframe') {
+            // data-ad-src attribute should contain iframe src
+            const src = el.getAttribute('data-ad-src');
+            if (src && !el.querySelector('iframe')) {
+                const iframe = document.createElement('iframe');
+                iframe.src = src;
+                iframe.width = el.getAttribute('data-ad-width') || '300';
+                iframe.height = el.getAttribute('data-ad-height') || '250';
+                iframe.style.border = '0';
+                iframe.setAttribute('loading', 'lazy');
+                el.appendChild(iframe);
+            }
+        } else if (type === 'script') {
+            // data-ad-src contains script url, data-ad-html contains inline HTML
+            const scriptSrc = el.getAttribute('data-ad-src');
+            const html = el.getAttribute('data-ad-html');
+            if (html && !el.querySelector('.ad-html')) {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'ad-html';
+                wrapper.innerHTML = html;
+                el.appendChild(wrapper);
+            }
+            if (scriptSrc && !el.querySelector('script[data-injected="1"]')) {
+                const s = document.createElement('script');
+                s.src = scriptSrc;
+                s.setAttribute('data-injected', '1');
+                s.async = true;
+                el.appendChild(s);
+            }
+        }
+    } catch (e) { /* ignore injection errors */ }
+}
+
+function initAdLazyLoad() {
+    try {
+        const imgs = Array.from(document.querySelectorAll('.ad-img'));
+        if (!imgs.length) return;
+        if ('IntersectionObserver' in window) {
+            const obs = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        const src = img.getAttribute('data-src');
+                        if (src) {
+                            img.src = src;
+                            img.removeAttribute('data-src');
+                        }
+                        observer.unobserve(img);
+                    }
+                });
+            }, { rootMargin: '200px' });
+
+            imgs.forEach(img => {
+                // If image already has no data-src, skip
+                if (!img.getAttribute('data-src')) return;
+                obs.observe(img);
+            });
+        } else {
+            // Fallback: eager-load
+            imgs.forEach(img => {
+                const src = img.getAttribute('data-src');
+                if (src) img.src = src;
+            });
+        }
+    } catch (e) { /* ignore */ }
+}
 

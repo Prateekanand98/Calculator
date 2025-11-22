@@ -11,6 +11,21 @@
         <h1>🧮 All-in-One Calculator</h1>
     </nav>
 
+    <!-- Advertisement boxes (responsive): side on desktop, top/bottom on mobile -->
+    <div id="adA" class="ad-box" role="complementary" aria-label="Advertisement A" data-ad-type="image">
+        <button class="ad-close" onclick="closeAd('adA')" aria-label="Close ad A">×</button>
+        <a href="#" target="_blank" rel="noopener noreferrer">
+            <img class="ad-img" src="ad.jpg" alt="Ad 1" loading="lazy" />
+        </a>
+    </div>
+
+    <div id="adB" class="ad-box" role="complementary" aria-label="Advertisement B" data-ad-type="image">
+        <button class="ad-close" onclick="closeAd('adB')" aria-label="Close ad B">×</button>
+        <a href="#" target="_blank" rel="noopener noreferrer">
+            <img class="ad-img" src="ad.jpg" alt="Ad 2" loading="lazy" />
+        </a>
+    </div>
+
     <div class="main-container">
         <!-- Main Tab Navigation -->
         <div class="tab-navigation">
@@ -442,6 +457,9 @@
                         <label style="display:flex; flex-direction:column; gap:6px;">Radius
                             <input type="number" id="circleRadius" placeholder="e.g. 5">
                         </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Perimeter (Circumference)
+                            <input type="number" id="circlePerimeter" placeholder="Leave blank to compute">
+                        </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Area
                             <input type="number" id="circleArea" placeholder="Leave blank to compute">
                         </label>
@@ -464,6 +482,9 @@
                         </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Side
                             <input type="number" id="squareSide" placeholder="e.g. 5">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Perimeter
+                            <input type="number" id="squarePerimeter" placeholder="Leave blank to compute">
                         </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Area
                             <input type="number" id="squareArea" placeholder="Leave blank to compute">
@@ -503,6 +524,9 @@
                                 </select>
                             </div>
                         </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Perimeter
+                            <input type="number" id="rectPerimeter" placeholder="Leave blank to compute">
+                        </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Area
                             <input type="number" id="rectArea" placeholder="Leave blank to compute">
                         </label>
@@ -540,6 +564,17 @@
                                     <option value="m">m</option>
                                 </select>
                             </div>
+                        </label>
+                        <div style="display:flex; flex-direction:column; gap:6px;">
+                            <p style="margin:0; font-weight:600;">Sides (optional)</p>
+                            <div style="display:flex; gap:8px;">
+                                <input type="number" id="triSideA" placeholder="Side a (optional)" style="flex:1;">
+                                <input type="number" id="triSideB" placeholder="Side b (optional)" style="flex:1;">
+                                <input type="number" id="triSideC" placeholder="Side c (optional)" style="flex:1;">
+                            </div>
+                        </div>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Perimeter
+                            <input type="number" id="triPerimeter" placeholder="Leave blank to compute">
                         </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Area
                             <input type="number" id="triArea" placeholder="Leave blank to compute">
@@ -579,6 +614,9 @@
                                 </select>
                             </div>
                         </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Perimeter (Circumference)
+                            <input type="number" id="ellipsePerimeter" placeholder="Leave blank to compute">
+                        </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Area
                             <input type="number" id="ellipseArea" placeholder="Leave blank to compute">
                         </label>
@@ -616,6 +654,12 @@
                                     <option value="m">m</option>
                                 </select>
                             </div>
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Side (adjacent to base)
+                            <input type="number" id="paraSide" placeholder="Length of adjacent side (optional)">
+                        </label>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Perimeter
+                            <input type="number" id="paraPerimeter" placeholder="Leave blank to compute">
                         </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Area
                             <input type="number" id="paraArea" placeholder="Leave blank to compute">
@@ -663,6 +707,16 @@
                                     <option value="m">m</option>
                                 </select>
                             </div>
+                        </label>
+                        <div style="display:flex; flex-direction:column; gap:6px;">
+                            <p style="margin:0; font-weight:600;">Non-parallel sides (optional)</p>
+                            <div style="display:flex; gap:8px;">
+                                <input type="number" id="trapSideA" placeholder="Side a (optional)" style="flex:1;">
+                                <input type="number" id="trapSideB" placeholder="Side b (optional)" style="flex:1;">
+                            </div>
+                        </div>
+                        <label style="display:flex; flex-direction:column; gap:6px;">Perimeter
+                            <input type="number" id="trapPerimeter" placeholder="Leave blank to compute">
                         </label>
                         <label style="display:flex; flex-direction:column; gap:6px;">Area
                             <input type="number" id="trapArea" placeholder="Leave blank to compute">
@@ -925,7 +979,10 @@
     </div>
 
     <footer>
-        <p>&copy; 2025 All-in-One Calculator | Built with HTML, CSS & JavaScript</p>
+        <p>&copy; 2025 All-in-One Calculator | Built with HTML, CSS & JavaScript
+            <button id="restoreAdsBtn" onclick="restoreAds()" class="restore-ads">Restore Ads</button>
+        
+        </p>
     </footer>
 
     <script src="script.js"></script>
